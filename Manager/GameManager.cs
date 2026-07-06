@@ -1,7 +1,8 @@
+using ConsoleGameFramework.Core;
 using ConsoleGameFramework.Scenes;
 using ConsoleGameFramework.UI;
 
-namespace ConsoleGameFramework.Core;
+namespace ConsoleGameFramework.Manager;
 
 /// <summary>
 /// 게임의 전체 흐름을 담당하는 클래스입니다.
@@ -31,10 +32,13 @@ public class GameManager
         RegisterScenes();
     }
 
-
+    #region Manager
     BattleManager _battle = new BattleManager();
+    ResourceManager _resources = new ResourceManager();
 
     public static BattleManager Battle { get { return Instance._battle; } }
+    public static ResourceManager Resource {  get { return Instance._resources; } }
+    #endregion
 
 
     public GameContext Context { get; }

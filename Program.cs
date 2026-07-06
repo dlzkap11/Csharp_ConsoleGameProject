@@ -1,6 +1,8 @@
 using System.Text;
-using ConsoleGameFramework.Core;
+using ConsoleGameFramework.Manager;
 using ConsoleGameFramework.UI;
+
+
 
 // 한글이 깨지지 않도록 콘솔 입출력 인코딩을 UTF-8로 맞춥니다.
 Console.OutputEncoding = Encoding.UTF8;

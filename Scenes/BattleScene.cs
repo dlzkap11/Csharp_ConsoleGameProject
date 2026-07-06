@@ -1,5 +1,6 @@
 ﻿using ConsoleGameFramework.Contents;
 using ConsoleGameFramework.Core;
+using ConsoleGameFramework.Manager;
 using ConsoleGameFramework.UI;
 using System.Diagnostics.Metrics;
 using System.Security.Cryptography.X509Certificates;
