@@ -17,6 +17,8 @@ public class BattleScene : SceneBase
 
     string name;
     public override SceneKey Key => SceneKey.Battle;
+    UISystem ui = new UISystem();
+    
 
     public override void Enter(GameContext context)
     {
@@ -61,11 +63,12 @@ public class BattleScene : SceneBase
             name = ConsoleUI.ReadString("이름을 입력하세요");
             
             GameManager.Battle.StartBattleInit(name);
+            ui.Subscribe(context.Player);
         }
+        
         ConsoleUI.WriteStatusBar(context.Player.Name, context.Player.Hp, context.Player.MaxHp);
         ConsoleUI.WriteStatusBar(GameManager.Battle.Enemy.Name, GameManager.Battle.Enemy.Hp, GameManager.Battle.Enemy.MaxHp, fillColor:ConsoleColor.Red);
 
-        
         //GoTo(context, SceneKey.Sample);
         ConsoleUI.WriteMap(context.Map); //갱신 => HandleInput에서 해주기 wasd로 받는다거나 방향키로 받거나
         ConsoleUI.WriteMenu(Menu, "시작 메뉴");
@@ -82,6 +85,11 @@ public class BattleScene : SceneBase
             case 1:
                 GameManager.Battle.PlayerAttack();
                 context.AddLog($"카운터 증가: {context.Player.Hp}");
+
+                EventBus.Instance.Subscribe<int>(GameEvent.PlayerDamaged, 
+                    damage => Console.WriteLine($"{damage}!"));
+                EventBus.Instance.Publish(GameEvent.PlayerDamaged, 20);
+                Thread.Sleep(2000);
                 break;
             case 2:
                 GoTo(context, SceneKey.Title);

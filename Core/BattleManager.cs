@@ -14,8 +14,8 @@ public class BattleManager
     public void StartBattleInit(string name)
     {
 
-        Player = new Player(name, 100, 20);
-        Enemy = new Enemy("고블린", 40, 4);
+        Player = new Player(name, 100, 10);
+        Enemy = new Enemy("고블린", 100, 4);
 
         
     }
