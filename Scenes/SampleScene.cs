@@ -1,4 +1,5 @@
 using ConsoleGameFramework.Core;
+using ConsoleGameFramework.Manager;
 using ConsoleGameFramework.UI;
 
 namespace ConsoleGameFramework.Scenes;

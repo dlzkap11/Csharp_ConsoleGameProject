@@ -1,4 +1,5 @@
 using ConsoleGameFramework.Contents;
+using ConsoleGameFramework.Manager;
 
 namespace ConsoleGameFramework.Core;
 
