@@ -20,5 +20,20 @@ namespace ConsoleGameFramework.Contents
         public int PP { get; private set; }
 
         public Define.Type SkillType { get; private set; }
+
+
+        public Skill()
+        {
+
+        }
+
+    }
+
+
+    public class SkillData
+    {
+        public Skill _skill;
+
+
     }
 }

@@ -1,4 +1,6 @@
+using ConsoleGameFramework.Contents;
 using ConsoleGameFramework.Core;
+using ConsoleGameFramework.Manager;
 using ConsoleGameFramework.UI;
 
 namespace ConsoleGameFramework.Scenes;
@@ -12,27 +14,44 @@ public class TitleScene : SceneBase
 {
     private static readonly List<MenuOption> Menu = new List<MenuOption>
     {
-        
-        new MenuOption(1, "샘플 화면으로 이동", "ConsoleUI의 다른 기능들을 보여주는 화면으로 이동합니다."),
+
+        new MenuOption(1, "캐릭터 생성", "캐릭터 생성 창으로 이동합니다."),
         new MenuOption(2, "배틀", "배틀 화면으로 이동합니다."),
         new MenuOption(0, "종료", "프로그램을 종료합니다.")
     };
 
     public override SceneKey Key => SceneKey.Title;
 
+    public override void Enter(GameContext context)
+    {
+        // 초기 포켓몬 데이터 인풋
+        if(GameManager.Resource.PoketmonsDict.Count == 0)
+            GameManager.Resource.PoketmonDataInput();
+    }
+
+
     public override void Render(GameContext context)
     {
         ConsoleUI.Clear();
         ConsoleUI.WriteTitle("CONSOLE GAME FRAMEWORK", "C# 콘솔앱 프로젝트 프레임워크");
 
-        ConsoleUI.WriteBox(new[]
+        if(context.Player != null)
         {
-            "이 프로젝트는 게임 내용이 빠진 뼈대(프레임워크)입니다.",
-            "Core, UI, Scenes 구조를 기준으로 여러분만의 게임을 채워 넣으면 됩니다.",
-            "화면은 버퍼에 먼저 그린 뒤 한 번에 반영되어 깜빡임을 줄입니다."
-        }, "프로젝트 안내", ConsoleColor.DarkCyan);
+            ConsoleUI.WriteBox(new[]
+            {
+                $"{context.Player.Name} 반갑순.. 리시빙",
+            }, "프로젝트 안내", ConsoleColor.DarkCyan);
+        }
+        else
+        {
+            ConsoleUI.WriteBox(new[]
+            {
+                "캐릭터를 생성해주세요",
+            }, "프로젝트 안내", ConsoleColor.DarkCyan);
+        }
 
         ConsoleUI.WriteMenu(Menu, "시작 메뉴");
+        ConsoleUI.WriteLog(context.Logs);
     }
 
     public override void HandleInput(GameContext context)
@@ -43,12 +62,17 @@ public class TitleScene : SceneBase
         {
             
             case 1:
-                GoTo(context, SceneKey.Sample);
+                GoTo(context, SceneKey.Start);
                 break;
 
             case 2:
+                if (context.Player == null)
+                {
+                    context.AddLog("아직 플레이어를 생성하지않았습니다!");
+                    break;
+                }
                 
-                GoTo(context, SceneKey.Battle);
+                GoTo(context, context.Player.PrevKey);
                 
                 
                 break;

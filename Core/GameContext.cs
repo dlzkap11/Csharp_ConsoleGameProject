@@ -13,7 +13,7 @@ namespace ConsoleGameFramework.Core;
 /// </summary>
 public class GameContext
 {
-    private const int MaxLogCount = 8;
+    private const int MaxLogCount = 5;
 
     public GameContext(GameManager game)
     {
@@ -24,20 +24,12 @@ public class GameContext
     {
         get
         {
-            return GameManager.Battle.Player;
+            return GameManager.Resource.Player;
         }
     }
 
-    public string[,] Map4 =
-        {   //Map[y, x]
-            { "#####"},
-            { "###P#"},
-            { "#..#E"}
-        };
-
-    public List<string> Map { get; set; } = new List<string>();
-
-
+    
+    public char[,] Map;
     /// <summary>
     /// 화면 전환과 프로그램 종료를 담당하는 매니저입니다.
     /// Scene에서 context.Game.ChangeScene(...) 형태로 사용합니다.

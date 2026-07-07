@@ -54,5 +54,10 @@ internal class Temp
     Dictionary<string, SkillData> SkillDict
     Dictionary<string, MapData> MapDict
      * */
+
+    // 오늘의 목표 7/7
+    // 맵 만들고 움직이는 거랑 움직여서 다음 맵으로 가기 -> string[,]인데 여기서 한 글자를 바꾸는게 뭔지 모르겄음 문제
+    // 시작씬에서 캐릭터 생성하고 다른 씬에서도 동기화가 잘 되는지 확인하기 = 된 거 같음
+    // 맵과 관련된 기능들 최대한 구현해보기 (어느 부분에 특정키를 누르면 대화창이 뜬다거나 특정 부분에서는 일정확률로 전투가 발생한다 이런거)
 }
 

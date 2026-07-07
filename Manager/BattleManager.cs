@@ -1,21 +1,19 @@
 ﻿using ConsoleGameFramework.Scenes;
 using ConsoleGameFramework.UI;
 using ConsoleGameFramework.Contents;
+using ConsoleGameFramework.Core;
 
 namespace ConsoleGameFramework.Manager;
 
 public class BattleManager
 {
-    public Player Player { get; private set; }
+    
 
 
 
-    public void StartBattleInit(string name)
+    public void Battle(GameContext context)
     {
-
-        Player = new Player(name);
-
-        
+        context.AddLog("몬스터와 마주침!");
     }
 
 
