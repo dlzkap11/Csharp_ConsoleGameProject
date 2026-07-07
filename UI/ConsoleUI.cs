@@ -1,3 +1,5 @@
+using static System.Net.WebRequestMethods;
+
 namespace ConsoleGameFramework.UI;
 
 /// <summary>
@@ -630,6 +632,12 @@ public static class ConsoleUI
             {
                 switch (tile)
                 {
+                    /*
+                     * # = 벽
+                     * P = 플레이어
+                     * E = NPC
+                     * . = 길
+                     * */
                     case '#':
                         WriteColored("#", ConsoleColor.DarkGray, null, false);
                         break;
@@ -651,6 +659,43 @@ public static class ConsoleUI
             WriteLine();
         }
 
+        WriteLine();
+    }
+
+    public static void WriteMap(char[,] rows)
+    {
+        // 한 줄이 끝나는거를 어떻게 정의할것인가
+        for(int i = 0;  i < rows.GetLength(0); i++ )
+        {
+            for(int j = 0; j < rows.GetLength(1); j++)
+            {
+                switch (rows[i,j])
+                {
+                    /*
+                     * # = 벽
+                     * P = 플레이어
+                     * E = NPC
+                     * . = 길
+                     * */
+                    case '#':
+                        WriteColored("#", ConsoleColor.DarkGray, null, false);
+                        break;
+                    case 'P':
+                        WriteColored("@", ConsoleColor.Cyan, null, false);
+                        break;
+                    case 'E':
+                        WriteColored("E", ConsoleColor.Yellow, null, false);
+                        break;
+                    case '.':
+                        Write(new string(' ', 1));
+                        break;
+                    default:
+                        Write(new string(' ', 1));
+                        break;
+                }
+            }
+            WriteLine();
+        }
         WriteLine();
     }
 

@@ -24,12 +24,8 @@ public class BattleScene : SceneBase
     {
         context.AddLog("샘플 화면에 들어왔습니다.");
 
-        
-        //context.Map = MapData.MapInit(MapData.Map4);
-        
-        
-        
-        
+        // 해당하는 Map 받아오기
+        context.Map = MapData.Map6;
     }
 
     public override void Render(GameContext context)
@@ -38,33 +34,30 @@ public class BattleScene : SceneBase
 
         ConsoleUI.Clear();
         ConsoleUI.WriteTitle($"전투 화면", "ㄷㄷ");
-        
 
-        context.Map = MapData.MapInit(MapData.Map4);
+        ConsoleUI.WriteMap(context.Map);
+        //context.Map = MapData.MapInit(MapData.Map4);
         //GoTo(context, SceneKey.Sample);
-        ConsoleUI.WriteMap(context.Map); //갱신 => HandleInput에서 해주기 wasd로 받는다거나 방향키로 받거나
+        //ConsoleUI.WriteMap(context.Map); //갱신 => HandleInput에서 해주기 wasd로 받는다거나 방향키로 받거나
         ConsoleUI.WriteLine($"{context.Player.Name}"); 
         ConsoleUI.WriteMenu(Menu, "시작 메뉴");
-        ConsoleUI.WriteLine(context.Map[0]);
-        Console.WriteLine(context.Map[0][1]);
-        Console.WriteLine(MapData.Map4[0, 0][0]);
         ConsoleUI.WriteLog(context.Logs);
         context.Random.Next();
     }
     
     // 벽체크와 이동관련은 나중에 다른 곳으로 옮겨주세요 BibbleThump
-    static bool IsWall(int pos, int player_y, int player_x)
+    static bool IsWall(int pos, int player_y, int player_x, GameContext context)
     {
         // 위 아래 왼 오
         int[] dr = { -1, 1, 0, 0 };
         int[] dc = { 0, 0, -1, 1 };
 
         //미로 크기 체크
-        if (player_y + dr[pos] < 0 || player_y + dr[pos] >= MapData.Map4.GetLength(0) || player_x + dc[pos] < 0 || player_x + dc[pos] >= MapData.Map4.GetLength(1))
+        if (player_y + dr[pos] < 0 || player_y + dr[pos] >= context.Map.GetLength(0) || player_x + dc[pos] < 0 || player_x + dc[pos] >= context.Map.GetLength(1))
             return false;
 
         //벽 체크
-        if (MapData.Map4[player_y + dr[pos], player_x + dc[pos]] == "#")
+        if (context.Map[player_y + dr[pos], player_x + dc[pos]] == '#')
             return false;
         else
             return true;
@@ -75,12 +68,30 @@ public class BattleScene : SceneBase
         int[] dr = { -1, 1, 0, 0 };
         int[] dc = { 0, 0, -1, 1 };
 
-        if (!IsWall(pos, player_y, player_x))
+        if (!IsWall(pos, player_y, player_x, context))
             return;
 
+        context.Map[player_y, player_x] = ' ';
         player_y += dr[pos];
         player_x += dc[pos];
-        MapData.Map4[player_y, player_x] = "P";
+        if(!IsSomething(pos, player_y, player_x, context))
+            GoTo(context, SceneKey.Title);
+
+        context.Map[player_y, player_x] = 'P';
+    }
+
+
+    public static bool IsSomething(int pos, int player_y, int player_x, GameContext context)
+    {
+        // 위 아래 왼 오
+        // E가 있으면 다른 곳으로 이동
+        if (context.Map[player_y, player_x] == 'E')
+        {
+            return false;
+        }
+            
+        else
+            return true;
     }
 
     public override void HandleInput(GameContext context)
@@ -89,7 +100,7 @@ public class BattleScene : SceneBase
 
         ConsoleKeyInfo keyInfo = Console.ReadKey(true);
 
-        
+        // 쓰기 편하려고 변수 선언
         int player_y = context.Player.PosY;
         int player_x = context.Player.PosX;
 
@@ -109,7 +120,9 @@ public class BattleScene : SceneBase
         {
             MovePos(3, ref player_y, ref player_x, context);
         }
-
+        // 이 후 동기화
+        context.Player.PosY = player_y;
+        context.Player.PosX = player_x;
 
         /*
         switch (choice)

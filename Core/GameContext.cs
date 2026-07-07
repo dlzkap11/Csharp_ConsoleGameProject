@@ -29,10 +29,7 @@ public class GameContext
     }
 
     
-
-    public List<string> Map { get; set; } = new List<string>();
-
-
+    public char[,] Map;
     /// <summary>
     /// 화면 전환과 프로그램 종료를 담당하는 매니저입니다.
     /// Scene에서 context.Game.ChangeScene(...) 형태로 사용합니다.

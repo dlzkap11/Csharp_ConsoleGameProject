@@ -16,8 +16,8 @@ public class Player : Character
     - 이름, 포켓몬(최대 6마리), 맵에 나타낼 현재 위치, 돈, 인벤토리
      */
     
-    public int PosX { get; private set; }
-    public int PosY { get; private set; }
+    public int PosX { get; set; }
+    public int PosY { get; set; }
     public int Money { get; private set; }
     
     public List<Poketmon> Poketmons { get; private set; }
