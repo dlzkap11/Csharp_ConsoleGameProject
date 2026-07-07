@@ -24,6 +24,7 @@ public class PoketmonData
     public PoketmonData(string name, int id, int atk, int def, int speed, Define.Type type)
     {
         Name = name;
+        Id = id;
         ATK = atk;
         DEF = def;
         Speed = speed;
@@ -40,20 +41,22 @@ public class Poketmon
     public PoketmonData _poketmon;
 
     public int Level { get; private set; }
-    public string Nickname { get; private set; }
+    public string Nickname { get; set; }
 
     public bool IsWild { get; private set; }
     public List<Skill>? Skills { get; private set; }
 
     public Poketmon(string name)
     {
-        _poketmon = GameManager.Resource.PoketmonsDict["이상해씨"];
+        _poketmon = GameManager.Resource.PoketmonsDict[name];
 
         //그거있는데 비었거나 널이거나
-        if (name == "")
+        if (string.IsNullOrEmpty(name))
             Nickname = _poketmon.Name;
         else
             Nickname = name;
+
+        //TODO 레벨은 구간마다 다르게 해야함 흠;
         Level = 5;
         Skills?.Add(new Skill());
     }
