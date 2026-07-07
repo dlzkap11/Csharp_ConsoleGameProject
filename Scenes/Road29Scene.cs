@@ -9,7 +9,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace ConsoleGameFramework.Scenes;
 
-public class BattleScene : SceneBase
+public class Road29Scene : SceneBase
 {
     private static readonly List<MenuOption> Menu = new List<MenuOption>
     {
@@ -18,7 +18,7 @@ public class BattleScene : SceneBase
         new MenuOption(0, "종료", "프로그램을 종료합니다.")
     };
 
-    public override SceneKey Key => SceneKey.Battle;
+    public override SceneKey Key => SceneKey.Road29;
 
    
     public override void Enter(GameContext context)
@@ -29,7 +29,7 @@ public class BattleScene : SceneBase
         if(context.Map != MapData.Map6)
         {
             context.Map = MapData.Map6;
-            MapData.MapInit(context.Map);
+            MapData.FindStartPoint(context.Map);
             context.Player.PosY = MapData.startPointY;
             context.Player.PosX = MapData.startPointX;
             MapData.prevMap = 'S';
@@ -42,7 +42,7 @@ public class BattleScene : SceneBase
     {
 
         ConsoleUI.Clear();
-        ConsoleUI.WriteTitle($"전투 화면", "T를 누르면 메뉴를 열 수 있습니다");
+        ConsoleUI.WriteTitle($"29번 도로", "T를 누르면 메뉴를 열 수 있습니다");
 
         ConsoleUI.WriteMap(context.Map);
         //context.Map = MapData.MapInit(MapData.Map4);
@@ -51,7 +51,6 @@ public class BattleScene : SceneBase
         ConsoleUI.WriteLine($"{context.Player.Name}"); 
         ConsoleUI.WriteMenu(Menu, "시작 메뉴");
         ConsoleUI.WriteLog(context.Logs);
-        context.Random.Next();
     }
     
 
@@ -62,13 +61,19 @@ public class BattleScene : SceneBase
         //context.Player.controller.Move(keyInfo, context.Player.PosY, context.Player.PosX, context);
         context.Player.Move(keyInfo, context);
 
+        //현재 위치가 *(풀숲)이면 일정확률로 몬스터를 만난다.
+        if (MapData.prevMap == '*' && context.Random.Next(100) < 10)
+        {
+            GameManager.Battle.Battle(context);
+
+        }
+
+        //현재 위치가 E이면 다음 장소로 이동
         if (MapData.prevMap == 'E')
         {
-            GoTo(context, SceneKey.Road14);
+            GoTo(context, SceneKey.Hometown);
         }
-            
 
-        
         if(keyInfo.Key == ConsoleKey.T)
         {
             int choice = ConsoleUI.ReadMenuChoice(Menu);
@@ -85,7 +90,7 @@ public class BattleScene : SceneBase
                     GoTo(context, Key);
                     break;
                 case 2:
-                    context.Player.prevKey = Key;
+                    context.Player.PrevKey = Key;
                     GoTo(context, SceneKey.Title);
                     break;
                 case 0:

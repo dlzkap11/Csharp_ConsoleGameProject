@@ -1,5 +1,6 @@
 using ConsoleGameFramework.Contents;
 using ConsoleGameFramework.Core;
+using ConsoleGameFramework.Manager;
 using ConsoleGameFramework.UI;
 
 namespace ConsoleGameFramework.Scenes;
@@ -20,6 +21,14 @@ public class TitleScene : SceneBase
     };
 
     public override SceneKey Key => SceneKey.Title;
+
+    public override void Enter(GameContext context)
+    {
+        // 초기 포켓몬 데이터 인풋
+        if(GameManager.Resource.PoketmonsDict.Count == 0)
+            GameManager.Resource.PoketmonDataInput();
+    }
+
 
     public override void Render(GameContext context)
     {
@@ -63,7 +72,7 @@ public class TitleScene : SceneBase
                     break;
                 }
                 
-                GoTo(context, context.Player.prevKey);
+                GoTo(context, context.Player.PrevKey);
                 
                 
                 break;

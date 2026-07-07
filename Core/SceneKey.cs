@@ -13,6 +13,8 @@ public enum SceneKey
     Start,
     Sample,
     Battle,
+    Hometown,
     Road14,
+    Road29,
 
 }

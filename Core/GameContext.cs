@@ -13,7 +13,7 @@ namespace ConsoleGameFramework.Core;
 /// </summary>
 public class GameContext
 {
-    private const int MaxLogCount = 8;
+    private const int MaxLogCount = 5;
 
     public GameContext(GameManager game)
     {

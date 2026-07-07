@@ -31,7 +31,9 @@ public class Player : Character
     }
 
     // 마지막으로 있었던 장소키
-    public SceneKey prevKey = SceneKey.Battle;
+    public SceneKey PrevKey = SceneKey.Hometown;
+    public int CurrentMapId { get; set; }
+
 
     // 방향
     // 위 아래 왼 오
@@ -47,7 +49,6 @@ public class Player : Character
         return context.Map[PosY + dr[pos], PosX + dc[pos]];
     }
 
-    // 벽체크와 이동관련은 나중에 다른 곳으로 옮겨주세요 BibbleThump
     public bool IsWall(int pos, GameContext context)
     {
         //미로 크기 체크
@@ -57,7 +58,7 @@ public class Player : Character
 
         char CantGo = context.Map[PosY + dr[pos], PosX + dc[pos]];
         //벽 체크
-        if (CantGo == '#' || CantGo == 'H')
+        if (CantGo == '#' || CantGo == 'H' || CantGo == '~')
             return true;
         else
             return false;

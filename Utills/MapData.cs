@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +9,17 @@ namespace ConsoleGameFramework.Utills;
 
 public static class MapData
 {
+    const int MAP_SIZE = 3;
+
+
     // Player 위치 이동전 원래 타일을 저장함
     public static char prevMap;
     public static int startPointX;
     public static int startPointY;
 
+    // 그래프
+    public static bool[,] maps = new bool[MAP_SIZE, MAP_SIZE];
+    
     public static char[,] Map6 =
         {   //Map[y, x]
             {'.','.','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'},
@@ -33,7 +40,30 @@ public static class MapData
 
         };
 
-    public static void MapInit(char[,] map)
+    public static char[,] Map8 =
+        {   //Map[y, x]
+            {'.','.','#','#','#','#','.','#','#','#','#','#','#','#','#','#','#'},
+            {'.','.','.','.','.','.','.','.','~','~','~','~','~','~','~','~','#'},
+            {'.','.','.','.','.','S','.','.','~','~','~','~','~','~','~','~','#'},
+            {'E','.','.','.','.','.','.','.','~','~','~','~','~','~','~','~','#'},
+            {'.','.','.','.','.','.','.','.','~','~','~','~','~','~','~','~','#'},
+            {'*','*','*','*','*','.','.','.','~','~','~','~','~','~','~','~','#'},
+            {'*','*','*','*','*','.','E','#','#','#','#','#','#','#','#','#','#'}
+
+        };
+    public static void MapLink()
+    {
+        maps[0, 1] = true;
+        maps[0, 2] = true;
+
+        maps[1, 0] = true;
+
+        maps[2, 0] = true;
+
+    }
+
+
+    public static void FindStartPoint(char[,] map)
     {
         for (int i = 0; i < map.GetLength(0); i++)
         {

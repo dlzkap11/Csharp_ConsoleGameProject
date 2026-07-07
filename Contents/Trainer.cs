@@ -8,10 +8,6 @@ public class Trainer : Character
     */
 
 
-   
-
-
-
     public Trainer(string name) : base(name)
     {
     }

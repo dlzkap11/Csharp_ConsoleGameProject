@@ -9,7 +9,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace ConsoleGameFramework.Scenes;
 
-public class Road14Scene : SceneBase
+public class HometownScene : SceneBase
 {
     private static readonly List<MenuOption> Menu = new List<MenuOption>
     {
@@ -18,7 +18,7 @@ public class Road14Scene : SceneBase
         new MenuOption(0, "종료", "프로그램을 종료합니다.")
     };
 
-    public override SceneKey Key => SceneKey.Road14;
+    public override SceneKey Key => SceneKey.Hometown;
 
 
     public override void Enter(GameContext context)
@@ -26,43 +26,43 @@ public class Road14Scene : SceneBase
         context.AddLog("Map 화면에 들어왔습니다.");
 
         // 해당하는 Map 받아오기 + 처음 플레이어 위치 갱신
-        if (context.Map != MapData.Map7)
+        if (context.Map != MapData.Map8)
         {
-            context.Map = MapData.Map7;
+            context.Player.CurrentMapId = 0;
+
+            context.Map = MapData.Map8;
             MapData.FindStartPoint(context.Map);
             context.Player.PosY = MapData.startPointY;
             context.Player.PosX = MapData.startPointX;
             MapData.prevMap = 'S';
             context.Map[context.Player.PosY, context.Player.PosX] = 'P';
         }
+
     }
 
     public override void Render(GameContext context)
     {
 
         ConsoleUI.Clear();
-        ConsoleUI.WriteTitle($"14번 도로", "T를 누르면 메뉴를 열 수 있습니다");
+
+        ConsoleUI.WriteTitle($"연두마을", "T를 누르면 메뉴를 열 수 있습니다");
 
         ConsoleUI.WriteMap(context.Map);
-        //context.Map = MapData.MapInit(MapData.Map4);
-        //GoTo(context, SceneKey.Sample);
-        //ConsoleUI.WriteMap(context.Map); //갱신 => HandleInput에서 해주기 wasd로 받는다거나 방향키로 받거나
         ConsoleUI.WriteLine($"{context.Player.Name}");
         ConsoleUI.WriteMenu(Menu, "시작 메뉴");
         ConsoleUI.WriteLog(context.Logs);
-        context.Random.Next();
     }
+
 
     public override void HandleInput(GameContext context)
     {
-
-
         ConsoleKeyInfo keyInfo = Console.ReadKey(true);
 
         //context.Player.controller.Move(keyInfo, context.Player.PosY, context.Player.PosX, context);
         context.Player.Move(keyInfo, context);
 
-         
+        // 이 부분은 이벤트로 만들면 좀 더 깔끔할 것 같다 -> 지금은 모든 맵씬마다 해줘야함
+        // 만약 이동하는 부분에서 풀숲에 있을 때 확률로 invoke를 해주면 뭔가 가능하지않을까?
         //현재 위치가 *(풀숲)이면 일정확률로 몬스터를 만난다.
         if (MapData.prevMap == '*' && context.Random.Next(100) < 10)
         {
@@ -70,11 +70,20 @@ public class Road14Scene : SceneBase
 
         }
 
+        //현재 위치가 E이면 다음 장소로 이동
         if (MapData.prevMap == 'E')
         {
-            GoTo(context, SceneKey.Hometown);
+            int PY = context.Player.PosY;
+            int PX = context.Player.PosX;
+
+            //if(PY == 0 || PX == 0 || PY == context.Map.GetLength(0) - 1 || PX == context.Map.GetLength(1) - 1)
+
+            // 몬가몬가 더 좋은 방법이 있을 것 같음
+            if(PX == 0)
+                GoTo(context, SceneKey.Road29);
+            else if(PY == context.Map.GetLength(0) - 1)
+                GoTo(context, SceneKey.Road14);
         }
-            
 
         if (keyInfo.Key == ConsoleKey.T)
         {

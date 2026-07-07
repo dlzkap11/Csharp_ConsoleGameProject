@@ -51,9 +51,10 @@ public class GameManager
     {
         AddScene(new TitleScene());
         AddScene(new SampleScene());
-        AddScene(new BattleScene());
         AddScene(new StartScene());
+        AddScene(new HometownScene());
         AddScene(new Road14Scene());
+        AddScene(new Road29Scene());
     }
 
     private void AddScene(IScene scene)
