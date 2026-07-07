@@ -54,7 +54,7 @@ public class SampleScene : SceneBase
                 new[] { "최댓값", CounterMax.ToString() }
             }
         );
-        ConsoleUI.WriteStatusBar(GameManager.Battle.Player.Name, GameManager.Battle.Player.Hp, GameManager.Battle.Player.MaxHp);
+        
         ConsoleUI.WriteMenu(Menu, "행동 선택");
         ConsoleUI.WriteLog(context.Logs);
     }

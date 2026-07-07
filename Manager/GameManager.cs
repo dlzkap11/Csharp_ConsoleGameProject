@@ -52,6 +52,7 @@ public class GameManager
         AddScene(new TitleScene());
         AddScene(new SampleScene());
         AddScene(new BattleScene());
+        AddScene(new StartScene());
     }
 
     private void AddScene(IScene scene)

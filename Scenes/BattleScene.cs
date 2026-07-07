@@ -2,6 +2,7 @@
 using ConsoleGameFramework.Core;
 using ConsoleGameFramework.Manager;
 using ConsoleGameFramework.UI;
+using ConsoleGameFramework.Utills;
 using System.Diagnostics.Metrics;
 using System.Security.Cryptography.X509Certificates;
 
@@ -16,9 +17,7 @@ public class BattleScene : SceneBase
         new MenuOption(0, "종료", "프로그램을 종료합니다.")
     };
 
-    string name;
     public override SceneKey Key => SceneKey.Battle;
-    UISystem ui = new UISystem();
     
 
     public override void Enter(GameContext context)
@@ -26,66 +25,97 @@ public class BattleScene : SceneBase
         context.AddLog("샘플 화면에 들어왔습니다.");
 
         
-        //test
-
-        // (미리 준비가 된 맵 string[,])
-        context.Map = MapInit(context.Map4);
-
+        //context.Map = MapData.MapInit(MapData.Map4);
         
         
         
         
     }
-    // 이 부분을 삭제하고 MapClass에 복사해주세요.
-    public List<string> MapInit(string[,] map)
-    {
-        List<string> createmap = new List<string>();
 
-        for (int i = 0; i < map.GetLength(0); i++)
-        {
-            for (int j = 0; j < map.GetLength(1); j++)
-            {
-                createmap.Add(map[i, j]);
-            }
-        }
-        return createmap;
-    }
     public override void Render(GameContext context)
     {
         
 
         ConsoleUI.Clear();
         ConsoleUI.WriteTitle($"전투 화면", "ㄷㄷ");
-        // 정말 대단하십니다... 저희라면 진작에 포기했을 게임을...
-        // 수많은 억까를 이겨내고 이기시는 침착맨님 존경스럽습니다.
-        // (이 부분을 삭제하고 나중에 플레이어 생성 씬을 만들면 복사해주세요)
-        if (context.Player == null)
-        {
-            name = ConsoleUI.ReadString("이름을 입력하세요");
-            
-            GameManager.Battle.StartBattleInit(name);
-            ui.Subscribe(context.Player);
-        }
         
-        ConsoleUI.WriteStatusBar(context.Player.Name, context.Player.Hp, context.Player.MaxHp);
-        ConsoleUI.WriteStatusBar(GameManager.Battle.Enemy.Name, GameManager.Battle.Enemy.Hp, GameManager.Battle.Enemy.MaxHp, fillColor:ConsoleColor.Red);
 
+        context.Map = MapData.MapInit(MapData.Map4);
         //GoTo(context, SceneKey.Sample);
         ConsoleUI.WriteMap(context.Map); //갱신 => HandleInput에서 해주기 wasd로 받는다거나 방향키로 받거나
+        ConsoleUI.WriteLine($"{context.Player.Name}"); 
         ConsoleUI.WriteMenu(Menu, "시작 메뉴");
+        ConsoleUI.WriteLine(context.Map[0]);
+        Console.WriteLine(context.Map[0][1]);
+        Console.WriteLine(MapData.Map4[0, 0][0]);
         ConsoleUI.WriteLog(context.Logs);
         context.Random.Next();
+    }
+    
+    // 벽체크와 이동관련은 나중에 다른 곳으로 옮겨주세요 BibbleThump
+    static bool IsWall(int pos, int player_y, int player_x)
+    {
+        // 위 아래 왼 오
+        int[] dr = { -1, 1, 0, 0 };
+        int[] dc = { 0, 0, -1, 1 };
+
+        //미로 크기 체크
+        if (player_y + dr[pos] < 0 || player_y + dr[pos] >= MapData.Map4.GetLength(0) || player_x + dc[pos] < 0 || player_x + dc[pos] >= MapData.Map4.GetLength(1))
+            return false;
+
+        //벽 체크
+        if (MapData.Map4[player_y + dr[pos], player_x + dc[pos]] == "#")
+            return false;
+        else
+            return true;
+    }
+
+    static void MovePos(int pos, ref int player_y, ref int player_x, GameContext context)
+    {
+        int[] dr = { -1, 1, 0, 0 };
+        int[] dc = { 0, 0, -1, 1 };
+
+        if (!IsWall(pos, player_y, player_x))
+            return;
+
+        player_y += dr[pos];
+        player_x += dc[pos];
+        MapData.Map4[player_y, player_x] = "P";
     }
 
     public override void HandleInput(GameContext context)
     {
-        int choice = ConsoleUI.ReadMenuChoice(Menu);
+        //int choice = ConsoleUI.ReadMenuChoice(Menu);
 
+        ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+        
+        int player_y = context.Player.PosY;
+        int player_x = context.Player.PosX;
+
+        if (keyInfo.Key == ConsoleKey.UpArrow)
+        {
+            MovePos(0, ref player_y, ref player_x, context);
+        }
+        else if (keyInfo.Key == ConsoleKey.DownArrow)
+        {
+            MovePos(1, ref player_y, ref player_x, context);
+        }
+        else if (keyInfo.Key == ConsoleKey.LeftArrow)
+        {
+            MovePos(2, ref player_y, ref player_x, context);
+        }
+        else if (keyInfo.Key == ConsoleKey.RightArrow)
+        {
+            MovePos(3, ref player_y, ref player_x, context);
+        }
+
+
+        /*
         switch (choice)
         {
             case 1:
-                GameManager.Battle.PlayerAttack();
-                context.AddLog($"카운터 증가: {context.Player.Hp}");
+                //GameManager.Battle.PlayerAttack();
 
                 EventBus.Instance.Subscribe<int>(GameEvent.PlayerDamaged, 
                     damage => Console.WriteLine($"{damage}!"));
@@ -99,6 +129,9 @@ public class BattleScene : SceneBase
                 context.Game.RequestQuit();
                 break;
         }
+        */
     }
+
+
 }
 

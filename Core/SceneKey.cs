@@ -10,6 +10,7 @@ namespace ConsoleGameFramework.Core;
 public enum SceneKey
 {
     Title,
+    Start,
     Sample,
     Battle
 }

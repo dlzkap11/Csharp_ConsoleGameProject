@@ -24,16 +24,11 @@ public class GameContext
     {
         get
         {
-            return GameManager.Battle.Player;
+            return GameManager.Resource.Player;
         }
     }
 
-    public string[,] Map4 =
-        {   //Map[y, x]
-            { "#####"},
-            { "###P#"},
-            { "#..#E"}
-        };
+    
 
     public List<string> Map { get; set; } = new List<string>();
 

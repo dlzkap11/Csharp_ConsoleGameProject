@@ -14,6 +14,13 @@ namespace ConsoleGameFramework.Manager
         //Dictionary<string, SkillData> SkillDict
         //Dictionary<string, MapData> MapDict
 
+        public Player Player { get; private set; }
 
+        public void PlayerInit(string name)
+        {
+
+            Player = new Player(name);
+
+        }
     }
 }
