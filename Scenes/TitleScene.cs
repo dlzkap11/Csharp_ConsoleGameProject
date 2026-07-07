@@ -62,8 +62,8 @@ public class TitleScene : SceneBase
                     context.AddLog("아직 플레이어를 생성하지않았습니다!");
                     break;
                 }
-                    
-                GoTo(context, SceneKey.Battle);
+                
+                GoTo(context, context.Player.prevKey);
                 
                 
                 break;

@@ -53,6 +53,7 @@ public class GameManager
         AddScene(new SampleScene());
         AddScene(new BattleScene());
         AddScene(new StartScene());
+        AddScene(new Road14Scene());
     }
 
     private void AddScene(IScene scene)

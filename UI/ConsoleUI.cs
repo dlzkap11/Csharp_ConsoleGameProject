@@ -674,7 +674,10 @@ public static class ConsoleUI
                     /*
                      * # = 벽
                      * P = 플레이어
-                     * E = NPC
+                     * E = 출구
+                     * H = NPC
+                     * T = 트레이너
+                     * * = 풀숲?
                      * . = 길
                      * */
                     case '#':
@@ -685,6 +688,12 @@ public static class ConsoleUI
                         break;
                     case 'E':
                         WriteColored("E", ConsoleColor.Yellow, null, false);
+                        break;
+                    case 'H':
+                        WriteColored("H", ConsoleColor.Magenta, null, false);
+                        break;
+                    case '*':
+                        WriteColored("*", ConsoleColor.Green, null, false);
                         break;
                     case '.':
                         Write(new string(' ', 1));
