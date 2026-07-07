@@ -70,21 +70,38 @@ public class StartScene : SceneBase
                     break;
                 }
 
-                if (context.Player.Poketmons == null)
+                if (context.Player.Poketmons.Count == 0)
                 {
+                    
                     ConsoleUI.WriteBox(new[]
                     {
-                        $"{GameManager.Resource.PoketmonsDict["이상해씨"].Name}",
-                        $"{GameManager.Resource.PoketmonsDict["파이리"].Name}",
-                        $"{GameManager.Resource.PoketmonsDict["꼬부기"].Name}"
+                        $"1){GameManager.Resource.PoketmonsDict["이상해씨"].Name}",
+                        $"2){GameManager.Resource.PoketmonsDict["파이리"].Name}",
+                        $"3){GameManager.Resource.PoketmonsDict["꼬부기"].Name}"
                     }, "포켓몬 고르기", ConsoleColor.DarkCyan);
 
-                    
+                    int input = ConsoleUI.ReadInt("가져갈 포켓몬을 고르세요.",1, 3);
+                    Poketmon poketmon;
+                    if (input == 1)
+                    {
+                        poketmon = GameManager.Resource.PoketmonInit("이상해씨");
+                    }
+                    else if(input == 2)
+                    {
+                        poketmon = GameManager.Resource.PoketmonInit("파이리");
+                    }
+                    else if(input == 3)
+                    {
+                        poketmon = GameManager.Resource.PoketmonInit("꼬부기");
+                    }
+                    else // 지역변수할당을 위한 else ReadInt에서 이미 1~3사이 값만을 받기 때문에 안전함
+                        poketmon = GameManager.Resource.PoketmonInit("미싱노");
 
+                    context.Player.Poketmons.Add(poketmon);
                     string name;
                     name = ConsoleUI.ReadString("별명을 지어주세요");
-                    Poketmon poketmon = GameManager.Resource.PoketmonInit(name);
-                    context.Player.Poketmons.Add(poketmon);
+                    if (!string.IsNullOrEmpty(name))
+                        poketmon.Nickname = name;
                 }
                 else
                 {

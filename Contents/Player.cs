@@ -28,6 +28,8 @@ public class Player : Character
     public Player(string name) : base(name)
     { 
         Money = START_MONEY;
+        Poketmons = new List<Poketmon>(6);
+        Inventory = new List<string>();
     }
 
     // 마지막으로 있었던 장소키
