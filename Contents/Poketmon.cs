@@ -14,23 +14,25 @@ public class PoketmonData
     */
     public string Name { get; private set; }
     public int Id { get; private set; }
-    public int ATK { get; private set; }
-    public int DEF { get; private set; }
-    public int Speed { get; private set; }
+    public int BaseHp { get; private set; }
+    public int BaseATK { get; private set; }
+    public int BaseDEF { get; private set; }
+    public int BaseSpeed { get; private set; }
     public Define.Type PoketmonType { get; private set; }
-    
+    public Define.Type PoketmonType2 { get; private set; }
 
-    //이름, 도감번호, 기초공격력, 기초방어력, 기초스피드, 타입
-    public PoketmonData(string name, int id, int atk, int def, int speed, Define.Type type)
+    //도감번호, 이름, 기초체력, 기초공격력, 기초방어력, 기초스피드, 타입1, 타입2(기본 없음)
+    public PoketmonData(int id, string name, int hp, int atk, int def, int speed, Define.Type type, Define.Type poketmonType2 = Define.Type.None)
     {
         Name = name;
         Id = id;
-        ATK = atk;
-        DEF = def;
-        Speed = speed;
+        BaseHp = hp;
+        BaseATK = atk;
+        BaseDEF = def;
+        BaseSpeed = speed;
 
-        PoketmonType = Define.Type.Grass;
-
+        PoketmonType = type;
+        PoketmonType2 = poketmonType2;
     }
 
 }
@@ -42,23 +44,41 @@ public class Poketmon
 
     public int Level { get; private set; }
     public string Nickname { get; set; }
+    public int MaxHp { get; private set; }
+    public int Hp {  get; private set; }
+    public int ATK { get; private set; }
+    public int DEF { get; private set; }
+    public int Speed { get; private set; }
+
 
     public bool IsWild { get; private set; }
-    public List<Skill>? Skills { get; private set; }
+    public List<Skill> Skills { get; private set; }
 
+    //처음 포켓몬 고르는 생성자
     public Poketmon(string name)
     {
         _poketmon = GameManager.Resource.PoketmonsDict[name];
 
-        //그거있는데 비었거나 널이거나
         if (string.IsNullOrEmpty(name))
             Nickname = _poketmon.Name;
         else
             Nickname = name;
 
-        //TODO 레벨은 구간마다 다르게 해야함 흠;
         Level = 5;
-        Skills?.Add(new Skill());
+        // 레벨에 따라서 스텟차이 두기 ex) ATK = Level * _poketmon.ATK + 10 이런식으로
+        Skills = new List<Skill>(4);
+    }
+
+    //야생 포켓몬 출현 생성자
+    public Poketmon(string name, int level, bool isWild = true)
+    {
+        _poketmon = GameManager.Resource.PoketmonsDict[name];
+
+        //야생포켓몬을 상속받아야하는가? 고민
+        Nickname = name;
+        //TODO 레벨은 구간마다 다르게 해야함 흠;
+        Level = level;
+        Skills = new List<Skill>(4);
     }
 
     //스킬 배우기
@@ -93,14 +113,14 @@ public class Poketmon
                 remove--;
                 context.AddLog($"{poketmon.Nickname}은 {Skills[remove]}를 잊고 {skill}을 배웠다!");
                 Skills.RemoveAt(remove);
-                poketmon.Skills.Add(GameManager.Resource.SkillDict[skill]._skill);
+                poketmon.Skills.Add(new Skill(skill));
 
             }
         }
         else
         {
             context.AddLog($"{poketmon.Nickname}은 {skill}을 배웠다!");
-            poketmon.Skills.Add(GameManager.Resource.SkillDict[skill]._skill);
+            poketmon.Skills.Add(new Skill(skill));
         }
     }
 }

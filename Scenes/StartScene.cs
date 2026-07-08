@@ -94,7 +94,7 @@ public class StartScene : SceneBase
                     {
                         poketmon = GameManager.Resource.PoketmonInit("꼬부기");
                     }
-                    else // 지역변수할당을 위한 else ReadInt에서 이미 1~3사이 값만을 받기 때문에 안전함
+                    else // 지역변수할당을 위한 else ReadInt에서 이미 1~3사이 값만을 받기 때문에 안전함(아마도)
                         poketmon = GameManager.Resource.PoketmonInit("미싱노");
 
                     context.Player.Poketmons.Add(poketmon);
