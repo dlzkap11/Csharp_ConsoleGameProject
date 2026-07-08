@@ -2,6 +2,7 @@
 using ConsoleGameFramework.Core;
 using ConsoleGameFramework.Manager;
 using ConsoleGameFramework.UI;
+using ConsoleGameFramework.Utills;
 using System.Diagnostics.Metrics;
 
 namespace ConsoleGameFramework.Scenes;
@@ -31,9 +32,16 @@ public class BattleScene : SceneBase
 
     }
 
+    public override void Exit(GameContext context)
+    {
+        // 객체 초기화
+        Enemy = null;
+    }
+
     public override void Render(GameContext context)
     {
         ConsoleUI.Clear();
+        
         ConsoleUI.WriteTitle("전투 화면", "ConsoleUI 기능 미리보기");
 
         ConsoleUI.WriteBox(new[]
@@ -55,17 +63,57 @@ public class BattleScene : SceneBase
 
     public override void HandleInput(GameContext context)
     {
+        
         int choice = ConsoleUI.ReadMenuChoice(Menu);
 
         switch (choice)
         {
+
             case 1:
+                string[] skillName = new string[4];
+
+                for(int i = 0; i < context.Player.Poketmons[0].Skills.Count; i++)
+                {
+                    skillName[i] = context.Player.Poketmons[0].Skills[i]._skill.Name;
+                    context.AddLog(skillName[i]);
+                    ConsoleUI.WriteLine($"{skillName[i]}");
+  
+                }
+
+                ConsoleUI.WriteBox(new[]
+                {
+                    $"{Format.FormatCell(skillName[0], 12)}{Format.FormatCell(skillName[1], 12)}",
+                    $"{Format.FormatCell(skillName[2], 12)}{Format.FormatCell(skillName[3], 12)}",
+                });
+                int input = ConsoleUI.ReadInt("사용할 기술을 선택하세요", 1, 4);
+                GameManager.Battle.GetBattle(context.Player.Poketmons[0], Enemy, input - 1);
+
+                if (Enemy.IsDead)
+                {
+                    context.AddLog("배틀에서 승리했다.");
+                    Thread.Sleep(1000);
+                    GoTo(context, context.Player.PrevKey);
+                }
                 break;
 
             case 2:
+                //인벤토리 보기
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                //취소시 돌아가기
+                if (keyInfo.Key == ConsoleKey.T)
+                    GoTo(context, Key);
+                else
+                    GameManager.Battle.EnemyAttack(context.Player.Poketmons[0], Enemy, choice);
+
                 break;
 
             case 3:
+                //내 포켓몬 리스트보기
+
+                ConsoleKeyInfo keyInfo2 = Console.ReadKey(true);
+                if (keyInfo2.Key == ConsoleKey.T)
+                    GoTo(context, Key);
                 break;
             case 4:
                 if(context.Random.Next(100) < 70)
@@ -75,12 +123,16 @@ public class BattleScene : SceneBase
                 }
                 else
                 {
+                    
                     context.AddLog("도망치는데 실패했다.");
+                    GameManager.Battle.EnemyAttack(context.Player.Poketmons[0], Enemy, choice);
                 }
                     
                 
                 break;
         }
     }
+
+    
 }
 

@@ -45,12 +45,17 @@ public class Poketmon
     public int Level { get; private set; }
     public string Nickname { get; set; }
     public int MaxHp { get; private set; }
-    public int Hp {  get; private set; }
+    private int hp;
+    public int Hp
+    {
+        get => hp;
+        set => hp = Math.Clamp(value, 0, MaxHp);
+    }
     public int ATK { get; private set; }
     public int DEF { get; private set; }
     public int Speed { get; private set; }
 
-
+    public bool IsDead => Hp <= 0;
     public bool IsWild { get; private set; }
     public List<Skill> Skills { get; private set; }
 
@@ -86,7 +91,16 @@ public class Poketmon
         MaxHp = (int)(Level * 0.5f + _poketmon.BaseHp);
         Hp = MaxHp;
         Skills = new List<Skill>(4);
+        
     }
+
+    //레벨에 따라 배울 수 있는 기술들이 있고 그 안에서 랜덤으로 최대 4개까지 받아오기
+    //주의 - 중복된 기술은 가져오면 안됨
+    public void SkillSet()
+    {
+        
+    }
+
 
     //스킬 배우기
     public void LearnSkill(Poketmon poketmon, string skill, GameContext context)

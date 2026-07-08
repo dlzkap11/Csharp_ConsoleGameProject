@@ -22,6 +22,7 @@ namespace ConsoleGameFramework.Manager
         public Poketmon PoketmonInit(string name)
         {
             Poketmon = new Poketmon(name);
+            Poketmon.Skills.Add(new Skill("몸통박치기"));
             return Poketmon;
         }
 
