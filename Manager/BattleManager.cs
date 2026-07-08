@@ -1,30 +1,35 @@
 ﻿using ConsoleGameFramework.Contents;
 using ConsoleGameFramework.Core;
+using ConsoleGameFramework.Data;
 using ConsoleGameFramework.Scenes;
 using ConsoleGameFramework.UI;
 using ConsoleGameFramework.Utills;
+using System.Collections;
+using static ConsoleGameFramework.Utills.Define;
 
 namespace ConsoleGameFramework.Manager;
 
 public class BattleManager
 {
     int levelScale;
-    List<string> poketmons = new List<string>();
+    List<int> poketmons = new List<int>();
 
 
     public Poketmon WildPoketmonAppeared(GameContext context)
     {
         int rLevel = context.Random.Next(levelScale - 1, levelScale + 2);
-        int rName = context.Random.Next(0, poketmons.Count);
+        int rNo = context.Random.Next(0, poketmons.Count);
 
         // 야생 포켓몬 생성
-        context.AddLog($"야생의 {poketmons[rName]}이 나타났다!");
-        Poketmon wildPoketmon = new Poketmon(poketmons[rName], rLevel);
+        PoketmonData data = PoketmonDatabase.GetPokemon(poketmons[rNo]);
+        context.AddLog($"야생의 {data.Name}이 나타났다!");
+        
+        Poketmon wildPoketmon = new Poketmon(data, rLevel);
         return wildPoketmon;
     }
 
     // 포켓몬을 마주쳤을 때 해당 필드의 레벨스케일과 포켓몬배열을 가져온다
-    public void GetFiled(int scale, string[] wpoketmons)
+    public void GetFiled(int scale, int[] wpoketmons)
     {
         poketmons.Clear();
         levelScale = scale;
@@ -35,40 +40,45 @@ public class BattleManager
     }
 
     // 데미지 계산
-    public int CalculateDamage(Poketmon atkP, Poketmon defP)
+    public int CalculateDamage(Poketmon atkP, Poketmon defP, SkillData skill)
     {
-        float multiper = TypeEffectiveness.GetFinalMultiplier(atkP._poketmon.PoketmonType, defP._poketmon.PoketmonType, defP._poketmon.PoketmonType2);
+        float multiper = TypeEffectiveness.GetFinalMultiplier(skill.Type, defP.Type1, defP.Type2);
+        float stab = 1.0f;
+        // 기술과 포켓몬 타입이 같으면 1.5배
+        if (atkP.Type1 == skill.Type || atkP.Type2 == skill.Type)
+            stab = 1.5f;
 
-        int damage = 0;
+        int damage = (int)(((2 * atkP.Level / 5.0 + 2) * skill.Power * atkP.Atk / defP.Def) / 50 + 2);
 
-        /* 뿌킷몬 데미지 공식
-         * int damage =
-                (int)(((2 * level / 5.0 + 2) * power * attack / defense) / 50 + 2);
+        damage = damage = (int)(damage * stab * multiper);
 
-            damage = (int)(damage * stab * typeMultiplier * randomMultiplier);
-         */
-
-        // Math.Abs((포켓몬 방어력) - (포켓몬 공격력 + 기술위력)) * 상성데미지
-        return 0;
+        return damage;
     }
 
     // 내 포켓몬, 상대 포켓몬, 내가 쓴 기술(skill[index])
     public void GetBattle(Poketmon myP, Poketmon enemyP, int index)
     {
         //상대와 나의 속도 비교 후 더 빠른 쪽이 먼저 공격
-        if (myP.Speed < enemyP.Speed)
+        Random rand = new Random();
+        rand.Next(0, 4);
+        if (myP.Spd < enemyP.Spd)
         {
-            myP.Hp -= enemyP.ATK;
+            
+            UseSkill(enemyP, myP, enemyP.Skills[rand.Next(0, 4)]);
+            myP.Hp -= CalculateDamage(enemyP, myP, enemyP.Skills[index]);
             if (myP.IsDead)
                 return;
-            enemyP.Hp -= myP.ATK;
+            UseSkill(myP, enemyP, myP.Skills[index]);
+            enemyP.Hp -= CalculateDamage(myP, enemyP, myP.Skills[index]);
         }
         else
         {
-            enemyP.Hp -= myP.ATK;
+            UseSkill(myP, enemyP, myP.Skills[index]);
+            enemyP.Hp -= CalculateDamage(myP, enemyP, myP.Skills[index]);
             if (enemyP.IsDead)
                 return;
-            myP.Hp -= myP.ATK;
+            UseSkill(enemyP, myP, enemyP.Skills[rand.Next(0, 4)]);
+            myP.Hp -= CalculateDamage(enemyP, myP, enemyP.Skills[index]);
         }
             
     }
@@ -97,7 +107,35 @@ public class BattleManager
         
     }
 
+    private void UseSkill(Poketmon attacker, Poketmon defender, SkillData skill)
+    {
+        Console.WriteLine($"{attacker.Name}이(가) {skill.Name}을(를) 사용했다!");
 
+        if (skill.Power != 0)
+        {
+            float typeMul = TypeEffectiveness.GetFinalMultiplier(skill.Type, defender.Type1, defender.Type2);
+            int damage = CalculateDamage(attacker, defender, skill);
+
+            defender.Hp -= damage;
+            if (defender.Hp < 0)
+                defender.Hp = 0;
+
+            Console.WriteLine($"{defender.Name}에게 {damage} 데미지!");
+        }
+        else if (skill.Power == 0)
+        {
+            if(skill.Name == "울음소리")
+            {
+                //공떨
+                Console.WriteLine($"{defender.Name}의 공격이 떨어졌다!");
+            }
+            else if(skill.Name == "꼬리흔들기")
+            {
+                //방떨
+                Console.WriteLine($"{defender.Name}의 방어력이 떨어졌다!");
+            }
+        }
+    }
 
     public enum BattleOutcome
     {

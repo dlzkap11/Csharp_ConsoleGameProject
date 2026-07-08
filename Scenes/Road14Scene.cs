@@ -66,7 +66,7 @@ public class Road14Scene : SceneBase
         //현재 위치가 *(풀숲)이면 일정확률로 몬스터를 만난다.
         if (MapData.prevMap == '*' && context.Random.Next(100) < 10)
         {
-            GameManager.Battle.Battle(context);
+            //GameManager.Battle.Battle(context);
 
         }
 

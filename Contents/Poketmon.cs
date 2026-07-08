@@ -2,147 +2,122 @@
 using ConsoleGameFramework.Manager;
 using ConsoleGameFramework.UI;
 using ConsoleGameFramework.Utills;
+using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ConsoleGameFramework.Contents;
 
-public class PoketmonData
-{
-    /*
-    포켓몬
-    - 이름, 레벨, 공격력, 방어력, 타입, 스피드, 기술배치(4개), 야생포켓몬인가 확인
-    *특공 특방 성격 지닌 물건 구현 X* 
-    */
-    public string Name { get; private set; }
-    public int Id { get; private set; }
-    public int BaseHp { get; private set; }
-    public int BaseATK { get; private set; }
-    public int BaseDEF { get; private set; }
-    public int BaseSpeed { get; private set; }
-    public Define.Type PoketmonType { get; private set; }
-    public Define.Type PoketmonType2 { get; private set; }
-
-    //도감번호, 이름, 기초체력, 기초공격력, 기초방어력, 기초스피드, 타입1, 타입2(기본 없음)
-    public PoketmonData(int id, string name, int hp, int atk, int def, int speed, Define.Type type, Define.Type poketmonType2 = Define.Type.None)
-    {
-        Name = name;
-        Id = id;
-        BaseHp = hp;
-        BaseATK = atk;
-        BaseDEF = def;
-        BaseSpeed = speed;
-
-        PoketmonType = type;
-        PoketmonType2 = poketmonType2;
-    }
-
-}
+using ConsoleGameFramework.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public class Poketmon
 {
-    // PoketmonData에서 고정되는 값들을 가져오기
-    public PoketmonData _poketmon;
-
+    public PoketmonData Data { get; private set; }
     public int Level { get; private set; }
-    public string Nickname { get; set; }
+
     public int MaxHp { get; private set; }
-    private int hp;
-    public int Hp
-    {
-        get => hp;
-        set => hp = Math.Clamp(value, 0, MaxHp);
-    }
-    public int ATK { get; private set; }
-    public int DEF { get; private set; }
-    public int Speed { get; private set; }
-
+    public int Hp { get; set; }
+    public int Atk { get; private set; }
+    public int Def { get; private set; }
+    public int Spd { get; private set; }
     public bool IsDead => Hp <= 0;
-    public bool IsWild { get; private set; }
-    public List<Skill> Skills { get; private set; }
+    public List<SkillData> Skills { get; private set; } = new List<SkillData>();
 
-    //처음 포켓몬 고르는 생성자
-    public Poketmon(string name)
+    public string Name => Data.Name;
+    public string Nickname;
+    public Define.Type Type1 => Data.Type1;
+    public Define.Type Type2 => Data.Type2;
+
+    public Poketmon(PoketmonData data, int level)
     {
-        _poketmon = GameManager.Resource.PoketmonsDict[name];
-
-        if (string.IsNullOrEmpty(name))
-            Nickname = _poketmon.Name;
-        else
-            Nickname = name;
-
-        Level = 5;
-        // 레벨에 따라서 스텟차이 두기 ex) ATK = Level * 2 + _poketmon.ATK 이런식으로
-        MaxHp = (int)(Level * 0.6f + _poketmon.BaseHp);
-        Hp = MaxHp;
-        ATK = (int)(Level * 0.5f + _poketmon.BaseATK);
-        DEF = (int)(Level * 0.3f + _poketmon.BaseDEF);
-        Speed = (int)(Level * 0.2f + _poketmon.BaseSpeed);
-        Skills = new List<Skill>(4);
-    }
-
-    //야생 포켓몬 출현 생성자
-    public Poketmon(string name, int level,  bool isWild = true)
-    {
-
-        _poketmon = GameManager.Resource.PoketmonsDict[name];
-
-        //야생포켓몬을 상속받아야하는가? 고민
-        Nickname = name;
+        Data = data;
         Level = level;
-        MaxHp = (int)(Level * 0.5f + _poketmon.BaseHp);
-        Hp = MaxHp;
-        Skills = new List<Skill>(4);
-        
+
+        InitializeStatsByLevel();
+        InitializeSkillsByLevel();
     }
 
-    //레벨에 따라 배울 수 있는 기술들이 있고 그 안에서 랜덤으로 최대 4개까지 받아오기
-    //주의 - 중복된 기술은 가져오면 안됨
-    public void SkillSet()
+    private void InitializeStatsByLevel()
     {
-        
-    }
+        MaxHp = Data.Hp;
+        Atk = Data.Atk;
+        Def = Data.Def;
+        Spd = Data.Spd;
 
-
-    //스킬 배우기
-    public void LearnSkill(Poketmon poketmon, string skill, GameContext context)
-    {
-        //해당하는 스킬이 존재하지않으면 리턴
-        if (!GameManager.Resource.SkillDict.ContainsKey(skill))
+        for (int i = 1; i < Level; i++)
         {
-            context.AddLog($"{skill}은 배울 수 없다.");
-            return;
+            MaxHp += LevelUpGrowth.GetHpGain(i);
+            Atk += LevelUpGrowth.GetAtkGain(i);
+            Def += LevelUpGrowth.GetDefGain(i);
+            Spd += LevelUpGrowth.GetSpdGain(i);
         }
 
+        Hp = MaxHp;
+    }
 
-        //스킬이 이미 4개이상있으면 4개 중 하나를 선택해서 지우거나 새로운 스킬을 배우지않는다.
-        if (Skills.Count >= 4)
+    private void InitializeSkillsByLevel()
+    {
+        Skills.Clear();
+
+        var learnedSkills = Data.LearnSkills
+            .Where(x => x.Level <= Level)
+            .OrderBy(x => x.Level)
+            .ThenBy(x => x.SkillNo)
+            .ToList();
+
+        foreach (var learn in learnedSkills)
         {
-            ConsoleUI.WriteBox(new[]
-            {
-                $"1){Skills[0],6} 2){Skills[1],6}",
-                $"3){Skills[2],6} 4){Skills[3],6}",
-                $"5){poketmon.Nickname}은 {skill}을 새로 배우고 싶다..."
-            });
+            SkillData skill = SkillDatabase.GetSkill(learn.SkillNo);
 
-            int remove = ConsoleUI.ReadInt("삭제할 스킬을 고르세요", 1, 5);
-            if (remove == 5)
+            if (!Skills.Any(x => x.No == skill.No))
             {
-                context.AddLog("새로운 기술을 배우지 않았습니다.");
-                return;
+                if (Skills.Count < 4)
+                    Skills.Add(skill);
+            }
+        }
+    }
+
+    public void LevelUp()
+    {
+        Level++;
+
+        MaxHp += LevelUpGrowth.GetHpGain(Level);
+        Atk += LevelUpGrowth.GetAtkGain(Level);
+        Def += LevelUpGrowth.GetDefGain(Level);
+        Spd += LevelUpGrowth.GetSpdGain(Level);
+
+        Hp += LevelUpGrowth.GetHpGain(Level);
+        if (Hp > MaxHp)
+            Hp = MaxHp;
+
+        LearnSkillsByLevel();
+    }
+
+    private void LearnSkillsByLevel()
+    {
+        var learnList = Data.LearnSkills
+            .Where(x => x.Level == Level)
+            .OrderBy(x => x.SkillNo)
+            .ToList();
+
+        foreach (var learn in learnList)
+        {
+            SkillData skill = SkillDatabase.GetSkill(learn.SkillNo);
+
+            if (Skills.Any(x => x.No == skill.No))
+                continue;
+
+            if (Skills.Count < 4)
+            {
+                Skills.Add(skill);
+                Console.WriteLine($"{Name}이(가) {skill.Name}을(를) 배웠다!");
             }
             else
             {
-                remove--;
-                context.AddLog($"{poketmon.Nickname}은 {Skills[remove]}를 잊고 {skill}을 배웠다!");
-                Skills.RemoveAt(remove);
-                poketmon.Skills.Add(new Skill(skill));
-
+                Console.WriteLine($"{Name}은(는) 이미 기술을 4개 알고 있다. {skill.Name}을(를) 배울 수 없다!");
             }
-        }
-        else
-        {
-            context.AddLog($"{poketmon.Nickname}은 {skill}을 배웠다!");
-            poketmon.Skills.Add(new Skill(skill));
         }
     }
 }
-

@@ -68,7 +68,7 @@ public class HometownScene : SceneBase
         {
 
             // 여기서 배틀매니저에게 지금 이곳이 어디인가를 보내고 (SceneKey) 포켓몬 생성 어쩌구저쩌구
-            GameManager.Battle.Battle(context);
+            //GameManager.Battle.Battle(context);
 
         }
 

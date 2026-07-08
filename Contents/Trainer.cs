@@ -8,11 +8,9 @@ public class Trainer : Character
     */
     public List<Poketmon> Poketmons = new List<Poketmon>(6);
 
-
     public Trainer(string name) : base(name)
     {
         // 포켓몬리스트에 포켓몬 추가
-        Poketmons.Add(new Poketmon("이상해씨"));
     }
 
 

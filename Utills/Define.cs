@@ -25,6 +25,12 @@ public class Define
         Fairy
     }
 
+    public enum SkillCategory
+    {
+        Damage,
+        Status
+    }
+
     public enum ItemType
     {
         Heal,
