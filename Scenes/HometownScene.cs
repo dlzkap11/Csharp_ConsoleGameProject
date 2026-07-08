@@ -66,6 +66,8 @@ public class HometownScene : SceneBase
         //현재 위치가 *(풀숲)이면 일정확률로 몬스터를 만난다.
         if (MapData.prevMap == '*' && context.Random.Next(100) < 10)
         {
+
+            // 여기서 배틀매니저에게 지금 이곳이 어디인가를 보내고 (SceneKey) 포켓몬 생성 어쩌구저쩌구
             GameManager.Battle.Battle(context);
 
         }

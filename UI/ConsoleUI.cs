@@ -537,7 +537,7 @@ public static class ConsoleUI
         int filled = (int)Math.Round(ratio * barWidth);
         int empty = barWidth - filled;
 
-        Write(Fit(label, 10));
+        Write(Fit(label, 20));
         Write(" [");
         WriteColored(new string('█', filled), fillColor, null, false);
         WriteColored(new string('░', empty), ConsoleColor.DarkGray, null, false);

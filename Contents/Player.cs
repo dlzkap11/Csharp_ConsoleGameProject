@@ -23,13 +23,13 @@ public class Player : Character
     public int Money { get; private set; }
     
     public List<Poketmon> Poketmons { get; private set; }
-    public List<string> Inventory { get; private set; }
+    public List<Item> Inventory { get; private set; }
 
     public Player(string name) : base(name)
     { 
         Money = START_MONEY;
         Poketmons = new List<Poketmon>(6);
-        Inventory = new List<string>();
+        Inventory = new List<Item>();
     }
 
     // 마지막으로 있었던 장소키

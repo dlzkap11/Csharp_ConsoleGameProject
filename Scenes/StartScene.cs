@@ -84,6 +84,7 @@ public class StartScene : SceneBase
                     Poketmon poketmon;
                     if (input == 1)
                     {
+                        //poketmon = new Poketmon("이상해씨");
                         poketmon = GameManager.Resource.PoketmonInit("이상해씨");
                     }
                     else if(input == 2)

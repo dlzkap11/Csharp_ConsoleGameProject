@@ -45,12 +45,17 @@ public class Poketmon
     public int Level { get; private set; }
     public string Nickname { get; set; }
     public int MaxHp { get; private set; }
-    public int Hp {  get; private set; }
+    private int hp;
+    public int Hp
+    {
+        get => hp;
+        set => hp = Math.Clamp(value, 0, MaxHp);
+    }
     public int ATK { get; private set; }
     public int DEF { get; private set; }
     public int Speed { get; private set; }
 
-
+    public bool IsDead => Hp <= 0;
     public bool IsWild { get; private set; }
     public List<Skill> Skills { get; private set; }
 
@@ -65,21 +70,37 @@ public class Poketmon
             Nickname = name;
 
         Level = 5;
-        // 레벨에 따라서 스텟차이 두기 ex) ATK = Level * _poketmon.ATK + 10 이런식으로
+        // 레벨에 따라서 스텟차이 두기 ex) ATK = Level * 2 + _poketmon.ATK 이런식으로
+        MaxHp = (int)(Level * 0.6f + _poketmon.BaseHp);
+        Hp = MaxHp;
+        ATK = (int)(Level * 0.5f + _poketmon.BaseATK);
+        DEF = (int)(Level * 0.3f + _poketmon.BaseDEF);
+        Speed = (int)(Level * 0.2f + _poketmon.BaseSpeed);
         Skills = new List<Skill>(4);
     }
 
     //야생 포켓몬 출현 생성자
-    public Poketmon(string name, int level, bool isWild = true)
+    public Poketmon(string name, int level,  bool isWild = true)
     {
+
         _poketmon = GameManager.Resource.PoketmonsDict[name];
 
         //야생포켓몬을 상속받아야하는가? 고민
         Nickname = name;
-        //TODO 레벨은 구간마다 다르게 해야함 흠;
         Level = level;
+        MaxHp = (int)(Level * 0.5f + _poketmon.BaseHp);
+        Hp = MaxHp;
         Skills = new List<Skill>(4);
+        
     }
+
+    //레벨에 따라 배울 수 있는 기술들이 있고 그 안에서 랜덤으로 최대 4개까지 받아오기
+    //주의 - 중복된 기술은 가져오면 안됨
+    public void SkillSet()
+    {
+        
+    }
+
 
     //스킬 배우기
     public void LearnSkill(Poketmon poketmon, string skill, GameContext context)

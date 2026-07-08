@@ -26,7 +26,12 @@ public class TitleScene : SceneBase
     {
         // 초기 포켓몬 데이터 인풋
         if(GameManager.Resource.PoketmonsDict.Count == 0)
+        {
+            GameManager.Resource.ItemDataInput();
             GameManager.Resource.PoketmonDataInput();
+            GameManager.Resource.SkillDataInput();
+        }
+            
     }
 
 

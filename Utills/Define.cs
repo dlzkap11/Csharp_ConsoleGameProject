@@ -24,5 +24,12 @@ public class Define
         Steel,
         Fairy
     }
+
+    public enum ItemType
+    {
+        Heal,
+        Ball,
+        Tool,
+    }
 }
 

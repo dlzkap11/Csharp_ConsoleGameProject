@@ -55,6 +55,7 @@ public class GameManager
         AddScene(new HometownScene());
         AddScene(new Road14Scene());
         AddScene(new Road29Scene());
+        AddScene(new BattleScene());
     }
 
     private void AddScene(IScene scene)
