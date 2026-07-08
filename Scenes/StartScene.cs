@@ -1,7 +1,9 @@
 ﻿using ConsoleGameFramework.Contents;
 using ConsoleGameFramework.Core;
+using ConsoleGameFramework.Data;
 using ConsoleGameFramework.Manager;
 using ConsoleGameFramework.UI;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ConsoleGameFramework.Scenes;
 
@@ -20,9 +22,6 @@ public class StartScene : SceneBase
 
         new MenuOption(9, "타이틀로", "첫 화면으로 돌아갑니다."),
     };
-
-    private int _counter;
-    
 
     public override SceneKey Key => SceneKey.Start;
 
@@ -75,9 +74,9 @@ public class StartScene : SceneBase
                     
                     ConsoleUI.WriteBox(new[]
                     {
-                        $"1){GameManager.Resource.PoketmonsDict["이상해씨"].Name}",
-                        $"2){GameManager.Resource.PoketmonsDict["파이리"].Name}",
-                        $"3){GameManager.Resource.PoketmonsDict["꼬부기"].Name}"
+                    $"1){PoketmonDatabase.GetPokemon(1).Name}",
+                        $"2){PoketmonDatabase.GetPokemon(4).Name}",
+                        $"3){PoketmonDatabase.GetPokemon(7).Name}"
                     }, "포켓몬 고르기", ConsoleColor.DarkCyan);
 
                     int input = ConsoleUI.ReadInt("가져갈 포켓몬을 고르세요.",1, 3);
@@ -85,18 +84,24 @@ public class StartScene : SceneBase
                     if (input == 1)
                     {
                         //poketmon = new Poketmon("이상해씨");
-                        poketmon = GameManager.Resource.PoketmonInit("이상해씨");
+                        PoketmonData data = PoketmonDatabase.GetPokemon(1);
+                        poketmon = new Poketmon(data, 5);
                     }
                     else if(input == 2)
                     {
-                        poketmon = GameManager.Resource.PoketmonInit("파이리");
+                        PoketmonData data = PoketmonDatabase.GetPokemon(4);
+                        poketmon = new Poketmon(data, 5);
                     }
                     else if(input == 3)
                     {
-                        poketmon = GameManager.Resource.PoketmonInit("꼬부기");
+                        PoketmonData data = PoketmonDatabase.GetPokemon(7);
+                        poketmon = new Poketmon(data, 5);
                     }
                     else // 지역변수할당을 위한 else ReadInt에서 이미 1~3사이 값만을 받기 때문에 안전함(아마도)
-                        poketmon = GameManager.Resource.PoketmonInit("미싱노");
+                    {
+                        PoketmonData data = PoketmonDatabase.GetPokemon(0);
+                        poketmon = new Poketmon(data, 5);
+                    }    
 
                     context.Player.Poketmons.Add(poketmon);
                     string name;

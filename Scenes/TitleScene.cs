@@ -1,5 +1,6 @@
 using ConsoleGameFramework.Contents;
 using ConsoleGameFramework.Core;
+using ConsoleGameFramework.Data;
 using ConsoleGameFramework.Manager;
 using ConsoleGameFramework.UI;
 
@@ -21,17 +22,18 @@ public class TitleScene : SceneBase
     };
 
     public override SceneKey Key => SceneKey.Title;
+    public bool IsFisrt;
 
     public override void Enter(GameContext context)
     {
         // 초기 포켓몬 데이터 인풋
-        if(GameManager.Resource.PoketmonsDict.Count == 0)
+        if (!IsFisrt)
         {
-            GameManager.Resource.ItemDataInput();
-            GameManager.Resource.PoketmonDataInput();
-            GameManager.Resource.SkillDataInput();
+            SkillDatabase.Init();
+            PoketmonDatabase.Init();
+            IsFisrt = true;
         }
-            
+        
     }
 
 

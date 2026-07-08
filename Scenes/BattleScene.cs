@@ -50,11 +50,11 @@ public class BattleScene : SceneBase
             "WriteStatusBar, WriteTable, WriteLog를 어떻게 쓰는지 참고하세요."
         }, "안내", ConsoleColor.DarkCyan);
         ConsoleUI.WriteLine($"{Enemy.Level}");
-        ConsoleUI.WriteStatusBar($"LV.{Enemy.Level} {Enemy.Nickname}", Enemy.Hp, Enemy.MaxHp, fillColor: ConsoleColor.Green);
+        ConsoleUI.WriteStatusBar($"LV.{Enemy.Level} {Enemy.Name}", Enemy.Hp, Enemy.MaxHp, fillColor: ConsoleColor.Green);
         ConsoleUI.WriteLine();
         ConsoleUI.WriteLine();
         //TDOD context.Player.Poketmons[0] 교체때문에라도 나중에 바꿔야함
-        ConsoleUI.WriteStatusBar($"LV.{context.Player.Poketmons[0].Level} {context.Player.Poketmons[0].Nickname}", context.Player.Poketmons[0].Hp, context.Player.Poketmons[0].MaxHp, fillColor: ConsoleColor.Green);
+        ConsoleUI.WriteStatusBar($"LV.{context.Player.Poketmons[0].Level} {context.Player.Poketmons[0].Name}", context.Player.Poketmons[0].Hp, context.Player.Poketmons[0].MaxHp, fillColor: ConsoleColor.Green);
         
 
         ConsoleUI.WriteMenu(Menu, "행동 선택");
@@ -74,7 +74,7 @@ public class BattleScene : SceneBase
 
                 for(int i = 0; i < context.Player.Poketmons[0].Skills.Count; i++)
                 {
-                    skillName[i] = context.Player.Poketmons[0].Skills[i]._skill.Name;
+                    skillName[i] = context.Player.Poketmons[0].Skills[i].Name;
                     context.AddLog(skillName[i]);
                     ConsoleUI.WriteLine($"{skillName[i]}");
   

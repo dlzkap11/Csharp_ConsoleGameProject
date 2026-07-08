@@ -22,7 +22,7 @@ public class Road29Scene : SceneBase
     public override SceneKey Key => SceneKey.Road29;
     private event Action<GameContext> WildPoketmonAppearHandler;
     const int LevelScale = 3;
-    public string[] WildPoketmon = { "꼬렛", "구구" };
+    public int[] WildPoketmon = { 19, 16};
 
     //억지 이벤트 모지요
     public void Test(GameContext context)
