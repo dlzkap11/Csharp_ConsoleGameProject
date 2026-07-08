@@ -7,8 +7,7 @@ namespace ConsoleGameFramework.Manager
     public class ResourceManager
     {
         public Dictionary<string, PoketmonData> PoketmonsDict = new Dictionary<string, PoketmonData>();
-        //Dictionary<string, ToolsData> ToolsDict
-        //Dictionary<string, SkillData> SkillDict
+        public Dictionary<string, ItemData> ItemsDict = new Dictionary<string, ItemData>();
         public Dictionary<string, SkillData> SkillDict = new Dictionary<string, SkillData>();
         //Dictionary<string, MapData> MapDict
 
@@ -25,6 +24,15 @@ namespace ConsoleGameFramework.Manager
             Poketmon = new Poketmon(name);
             return Poketmon;
         }
+
+        //아이템이름, 설명, 아이템타입
+        public void ItemDataInput()
+        {   
+            ItemsDict.Add("회복약", new ItemData("회복약", "HP를 20회복한다.", Define.ItemType.Heal));
+            ItemsDict.Add("몬스터볼", new ItemData("몬스터볼", "야생 포켓몬을 잡을 수 있다.", Define.ItemType.Ball));
+            ItemsDict.Add("좋은 낚시대", new ItemData("좋은 낚시대", "물가에서 낚시를 할 수 있다.", Define.ItemType.Tool));
+        }
+
         //기술이름, 위력, 명중률, PP, 기술타입
         public void SkillDataInput()
         {
@@ -35,9 +43,11 @@ namespace ConsoleGameFramework.Manager
         //도감번호, 이름, 기초체력, 기초공격력, 기초방어력, 기초스피드, 타입1, 타입2
         public void PoketmonDataInput()
         {
-            PoketmonsDict.Add("이상해씨", new PoketmonData(1, "이상해씨", 20, 8, 10, 8, Define.Type.Grass));
-            PoketmonsDict.Add("파이리", new PoketmonData(4, "파이리", 13, 9, 7, 10, Define.Type.Water));
-            PoketmonsDict.Add("꼬부기", new PoketmonData(7, "꼬부기", 18, 7, 12, 9, Define.Type.Fire));
+            PoketmonsDict.Add("이상해씨", new PoketmonData(1, "이상해씨", 45, 49, 49, 45, Define.Type.Grass, Define.Type.Poison));
+            PoketmonsDict.Add("파이리", new PoketmonData(4, "파이리", 39, 52, 43, 65, Define.Type.Water));
+            PoketmonsDict.Add("꼬부기", new PoketmonData(7, "꼬부기", 44, 48, 65, 43, Define.Type.Fire));
+            PoketmonsDict.Add("구구", new PoketmonData(16, "구구", 40, 45, 40, 56, Define.Type.Normal, Define.Type.Flying));
+            PoketmonsDict.Add("꼬렛", new PoketmonData(19, "꼬렛", 30, 56, 35, 72, Define.Type.Normal));
             PoketmonsDict.Add("피카츄", new PoketmonData(25, "피카츄", 12, 8, 8, 13, Define.Type.Electric));
         }
     }

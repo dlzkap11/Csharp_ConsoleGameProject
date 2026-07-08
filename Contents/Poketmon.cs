@@ -65,19 +65,26 @@ public class Poketmon
             Nickname = name;
 
         Level = 5;
-        // 레벨에 따라서 스텟차이 두기 ex) ATK = Level * _poketmon.ATK + 10 이런식으로
+        // 레벨에 따라서 스텟차이 두기 ex) ATK = Level * 2 + _poketmon.ATK 이런식으로
+        MaxHp = (int)(Level * 0.6f + _poketmon.BaseHp);
+        Hp = MaxHp;
+        ATK = (int)(Level * 0.5f + _poketmon.BaseATK);
+        DEF = (int)(Level * 0.3f + _poketmon.BaseDEF);
+        Speed = (int)(Level * 0.2f + _poketmon.BaseSpeed);
         Skills = new List<Skill>(4);
     }
 
     //야생 포켓몬 출현 생성자
-    public Poketmon(string name, int level, bool isWild = true)
+    public Poketmon(string name, int level,  bool isWild = true)
     {
+
         _poketmon = GameManager.Resource.PoketmonsDict[name];
 
         //야생포켓몬을 상속받아야하는가? 고민
         Nickname = name;
-        //TODO 레벨은 구간마다 다르게 해야함 흠;
         Level = level;
+        MaxHp = (int)(Level * 0.5f + _poketmon.BaseHp);
+        Hp = MaxHp;
         Skills = new List<Skill>(4);
     }
 

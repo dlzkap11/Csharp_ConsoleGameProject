@@ -6,6 +6,7 @@ using ConsoleGameFramework.Utills;
 using System.ComponentModel.Design;
 using System.Diagnostics.Metrics;
 using System.Security.Cryptography.X509Certificates;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ConsoleGameFramework.Scenes;
 
@@ -19,10 +20,27 @@ public class Road29Scene : SceneBase
     };
 
     public override SceneKey Key => SceneKey.Road29;
+    private event Action<GameContext> WildPoketmonAppearHandler;
+    const int LevelScale = 3;
+    public string[] WildPoketmon = { "꼬렛", "구구" };
 
-   
+    //억지 이벤트 모지요
+    public void Test(GameContext context)
+    {
+        context.Player.PrevKey = Key;
+        GameManager.Battle.GetFiled(LevelScale, WildPoketmon);
+        GoTo(context, SceneKey.Battle);
+    }
+
+    
+
     public override void Enter(GameContext context)
     {
+        WildPoketmonAppearHandler = Test;
+        EventBus.Instance.Subscribe(GameEvent.WildPoketmonAppeared, WildPoketmonAppearHandler);
+        
+        //OnWildPoketmonAppeared += WildPoketmonAppearHandler;
+
         context.AddLog("Map 화면에 들어왔습니다.");
 
         // 해당하는 Map 받아오기 + 처음 플레이어 위치 갱신
@@ -35,9 +53,14 @@ public class Road29Scene : SceneBase
             MapData.prevMap = 'S';
             context.Map[context.Player.PosY, context.Player.PosX] = 'P';
         }
-        
-    }
 
+    }
+    
+    public override void Exit(GameContext context)
+    {
+        EventBus.Instance.UnSubscribe(GameEvent.WildPoketmonAppeared, WildPoketmonAppearHandler);
+    }
+    
     public override void Render(GameContext context)
     {
 
@@ -51,6 +74,7 @@ public class Road29Scene : SceneBase
         ConsoleUI.WriteLine($"{context.Player.Name}"); 
         ConsoleUI.WriteMenu(Menu, "시작 메뉴");
         ConsoleUI.WriteLog(context.Logs);
+        
     }
     
 
@@ -64,8 +88,12 @@ public class Road29Scene : SceneBase
         //현재 위치가 *(풀숲)이면 일정확률로 몬스터를 만난다.
         if (MapData.prevMap == '*' && context.Random.Next(100) < 10)
         {
-            GameManager.Battle.Battle(context);
-
+            EventBus.Instance.Publish(GameEvent.WildPoketmonAppeared, context);
+        }
+        if (MapData.prevMap == '*' && context.Random.Next(100) < 10)
+        {
+            //Thread.Sleep(1000);
+            //GoTo(context, SceneKey.Battle);
         }
 
         //현재 위치가 E이면 다음 장소로 이동
@@ -80,13 +108,6 @@ public class Road29Scene : SceneBase
             switch (choice)
             {
                 case 1:
-                    //GameManager.Battle.PlayerAttack();
-                    /*
-                    EventBus.Instance.Subscribe<int>(GameEvent.PlayerDamaged,
-                        damage => Console.WriteLine($"{damage}!"));
-                    EventBus.Instance.Publish(GameEvent.PlayerDamaged, 20);
-                    Thread.Sleep(2000);
-                    */
                     GoTo(context, Key);
                     break;
                 case 2:
