@@ -17,7 +17,7 @@ public class TitleScene : SceneBase
     {
 
         new MenuOption(1, "캐릭터 생성", "캐릭터 생성 창으로 이동합니다."),
-        new MenuOption(2, "배틀", "배틀 화면으로 이동합니다."),
+        new MenuOption(2, "게임 시작", "게임화면으로 이동합니다."),
         new MenuOption(0, "종료", "프로그램을 종료합니다.")
     };
 
@@ -31,22 +31,22 @@ public class TitleScene : SceneBase
         {
             SkillDatabase.Init();
             PoketmonDatabase.Init();
+            ItemDatabase.Init();
             IsFisrt = true;
         }
-        
     }
 
 
     public override void Render(GameContext context)
     {
         ConsoleUI.Clear();
-        ConsoleUI.WriteTitle("CONSOLE GAME FRAMEWORK", "C# 콘솔앱 프로젝트 프레임워크");
+        ConsoleUI.WriteTitle("Poketmonster", "포켓몬스터 레드");
 
         if(context.Player != null)
         {
             ConsoleUI.WriteBox(new[]
             {
-                $"{context.Player.Name} 반갑순.. 리시빙",
+                $"{context.Player.Name} 반갑다.. 이제 모험을 떠나보도록",
             }, "프로젝트 안내", ConsoleColor.DarkCyan);
         }
         else
@@ -76,6 +76,11 @@ public class TitleScene : SceneBase
                 if (context.Player == null)
                 {
                     context.AddLog("아직 플레이어를 생성하지않았습니다!");
+                    break;
+                }
+                if(context.Player.Poketmons.Count == 0)
+                {
+                    context.AddLog("아직 포켓몬을 받지 못 했습니다.");
                     break;
                 }
                 

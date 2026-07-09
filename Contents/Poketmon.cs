@@ -4,13 +4,15 @@ using ConsoleGameFramework.UI;
 using ConsoleGameFramework.Utills;
 using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace ConsoleGameFramework.Contents;
-
 using ConsoleGameFramework.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+
+namespace ConsoleGameFramework.Contents;
+
+
 
 public class Poketmon
 {
@@ -19,7 +21,15 @@ public class Poketmon
     public int MaxExp { get; private set; }
     public int Exp {  get; set; }
     public int MaxHp { get; private set; }
-    public int Hp { get; set; }
+    private int hp;
+    public int Hp
+    {
+        get => hp;
+        set
+        {
+            hp = Math.Clamp(value, 0, MaxHp);
+        }
+    }
     public int Atk { get; private set; }
     public int Def { get; private set; }
     public int Spd { get; private set; }

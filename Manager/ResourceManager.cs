@@ -1,4 +1,5 @@
 ﻿using ConsoleGameFramework.Contents;
+using ConsoleGameFramework.Data;
 using ConsoleGameFramework.UI;
 using ConsoleGameFramework.Utills;
 
@@ -8,11 +9,20 @@ namespace ConsoleGameFramework.Manager
     {
 
         public Player Player { get; private set; }
-        public Poketmon Poketmon { get; private set; }
+        public ItemData Data { get; private set; }
+        public Item _Item { get; private set; }
 
+        //상처약 3개 몬스터볼 5개 지급
         public void PlayerInit(string name)
         {
             Player = new Player(name);
+            Data = ItemDatabase.GetItem(1);
+            _Item = new Item(Data, 3);
+            Player.Inventory.Add(_Item);
+
+            Data = ItemDatabase.GetItem(2);
+            _Item = new Item(Data, 5);
+            Player.Inventory.Add(_Item);
         }
         /*
         //아이템이름, 설명, 아이템타입

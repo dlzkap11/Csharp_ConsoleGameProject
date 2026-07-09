@@ -87,38 +87,7 @@ public class BattleManager
             
     }
 
-    //도망실패시 상대만 공격
-
-    //아이템사용시 상대만 공격
-
-    //포켓몬교체시 상대만 공격
-    // 하나로 모아서 내가 한 행동만 받아서 잘하고 상대 공격라인만 쓰면 될 듯
-    public void EnemyAttack(Poketmon myP, Poketmon enemyP, int choice)
-    {
-        Random rand = new Random();
-        int eindex = rand.Next(0, 4);
-        //적 스킬개수보다 eindex가 클 경우 리롤
-        while (eindex >= enemyP.Skills.Count)
-            eindex = rand.Next(0, 4);
-
-        // choice 2, 3 ,4 각각 아이템사용 포켓몬교체 도망치기
-        if (choice == 2)
-        {
-            
-        }
-        else if(choice == 3)
-        {
-
-        }
-        else if(choice == 4)
-        {
-            UseSkill(enemyP, myP, enemyP.Skills[eindex]);
-            Thread.Sleep(1000);
-        }
-        
-    }
-
-    private void UseSkill(Poketmon attacker, Poketmon defender, SkillData skill)
+    public void UseSkill(Poketmon attacker, Poketmon defender, SkillData skill)
     {
         ConsoleUI.WriteLine($"{attacker.Nickname}이(가) {skill.Name}을(를) 사용했다!");
         

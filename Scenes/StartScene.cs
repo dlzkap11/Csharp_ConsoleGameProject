@@ -19,6 +19,7 @@ public class StartScene : SceneBase
     {
         new MenuOption(1, "캐릭터 생성", "처음 캐릭터를 생성합니다."),
         new MenuOption(2, "파트너 고르기", "처음 가지고 시작할 포켓몬을 고릅니다."),
+        new MenuOption(3, "도둑이야!", "처음 파트너 포켓몬 3마리를 모두 가져갑니다."),
 
         new MenuOption(9, "타이틀로", "첫 화면으로 돌아갑니다."),
     };
@@ -103,6 +104,7 @@ public class StartScene : SceneBase
                         poketmon = new Poketmon(data, 5);
                     }    
 
+                    
                     context.Player.Poketmons.Add(poketmon);
                     string name;
                     name = ConsoleUI.ReadString("별명을 지어주세요");
@@ -115,6 +117,26 @@ public class StartScene : SceneBase
                     context.AddLog("이미 포켓몬을 가지고 있습니다.");
                 }
 
+                break;
+
+
+            case 3:
+                if (context.Player == null)
+                {
+                    context.AddLog("아직 플레이어를 생성하지않았습니다!");
+                    break;
+                }
+
+                Poketmon Apoketmon;
+                PoketmonData data2;
+                for(int i = 1; i < 8; i += 3)
+                {
+                    data2 = PoketmonDatabase.GetPokemon(i);
+                    Apoketmon = new Poketmon(data2, 7);
+                    context.Player.Poketmons.Add(Apoketmon);
+                }
+                context.AddLog("모든 포켓몬을 가져갑니다.");
+                GoTo(context, SceneKey.Title);
                 break;
             case 9:
                 GoTo(context, SceneKey.Title);
