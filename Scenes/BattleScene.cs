@@ -104,6 +104,12 @@ public class BattleScene : SceneBase
                     GoTo(context, Key);
                     break;
                 }
+                if (string.IsNullOrEmpty(skillName[input - 1]))
+                {
+                    ConsoleUI.WriteLine("아직 잠재성이 남아있다.");
+                    break;
+                }
+
 
                 GameManager.Battle.GetBattle(CrruentPoketmon, Enemy, input - 1);
                 if (Enemy.IsDead)
@@ -177,6 +183,12 @@ public class BattleScene : SceneBase
                         input = ConsoleUI.ReadInt("아이템을 사용할 포켓몬을 고르세요 (마지막 번호는 돌아가기)", 1, 7);
                         if (input == 7)
                             return;
+                        if (string.IsNullOrEmpty(poketmonName2[input - 1]))
+                        {
+                            ConsoleUI.WriteLine("하지만 아무도 없었다...");
+                            Thread.Sleep(1000);
+                            return;
+                        }
                         //상처약
                         switch (input)
                         {
@@ -258,6 +270,14 @@ public class BattleScene : SceneBase
                 }
                 else
                 {
+                    if (string.IsNullOrEmpty(poketmonName[input - 1]))
+                    {
+                        ConsoleUI.WriteLine("하지만 아무도 없었다...");
+                        Thread.Sleep(1000);
+                        return;
+                    }
+                        
+
                     if (CrruentPoketmon == context.Player.Poketmons[input - 1])
                     {
                         ConsoleUI.WriteLine("이미 나와있는 포켓몬입니다!");
