@@ -15,7 +15,7 @@ public static class PoketmonDatabase
             {
                 No = 1,
                 Name = "이상해씨",
-                Hp = 10, //45
+                Hp = 1, //45
                 Atk = 65,
                 Def = 65,
                 Spd = 45,
@@ -34,7 +34,7 @@ public static class PoketmonDatabase
             {
                 No = 4,
                 Name = "파이리",
-                Hp = 39,
+                Hp = 1, //39
                 Atk = 60,
                 Def = 50,
                 Spd = 65,
@@ -52,7 +52,7 @@ public static class PoketmonDatabase
             {
                 No = 7,
                 Name = "꼬부기",
-                Hp = 44,
+                Hp = 1, //44
                 Atk = 50,
                 Def = 65,
                 Spd = 43,
