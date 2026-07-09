@@ -126,11 +126,13 @@ public class Poketmon
             if (Skills.Count < 4)
             {
                 Skills.Add(skill);
-                Console.WriteLine($"{Name}이(가) {skill.Name}을(를) 배웠다!");
+                ConsoleUI.WriteLine($"{Name}이(가) {skill.Name}을(를) 배웠다!");
+                Thread.Sleep(1000);
             }
             else
             {
-                Console.WriteLine($"{Name}은(는) 이미 기술을 4개 알고 있다. {skill.Name}을(를) 배울 수 없다!");
+                ConsoleUI.WriteLine($"{Name}은(는) 이미 기술을 4개 알고 있다. {skill.Name}을(를) 배울 수 없다!");
+                Thread.Sleep(1000);
             }
         }
     }

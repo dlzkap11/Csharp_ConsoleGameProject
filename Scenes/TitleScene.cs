@@ -40,21 +40,21 @@ public class TitleScene : SceneBase
     public override void Render(GameContext context)
     {
         ConsoleUI.Clear();
-        ConsoleUI.WriteTitle("Poketmonster", "포켓몬스터 레드");
+        ConsoleUI.WriteTitle("Poketmon", "포켓몬스터 금/은");
 
         if(context.Player != null)
         {
             ConsoleUI.WriteBox(new[]
             {
                 $"{context.Player.Name} 반갑다.. 이제 모험을 떠나보도록",
-            }, "프로젝트 안내", ConsoleColor.DarkCyan);
+            }, "-안내-", ConsoleColor.DarkCyan);
         }
         else
         {
             ConsoleUI.WriteBox(new[]
             {
                 "캐릭터를 생성해주세요",
-            }, "프로젝트 안내", ConsoleColor.DarkCyan);
+            }, "-안내-", ConsoleColor.DarkCyan);
         }
 
         ConsoleUI.WriteMenu(Menu, "시작 메뉴");

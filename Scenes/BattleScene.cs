@@ -5,6 +5,7 @@ using ConsoleGameFramework.UI;
 using ConsoleGameFramework.Utills;
 using System.Diagnostics.Metrics;
 using System.Reflection;
+using System.Xml.Linq;
 
 namespace ConsoleGameFramework.Scenes;
 
@@ -55,13 +56,8 @@ public class BattleScene : SceneBase
     {
         ConsoleUI.Clear();
         
-        ConsoleUI.WriteTitle("전투 화면", "가방이나 포켓몬 교체 중 취소를 원한다면 T를 입력하세요");
+        ConsoleUI.WriteTitle("전투 화면");
 
-        ConsoleUI.WriteBox(new[]
-        {
-            "이 화면은 상태바, 표, 로그 출력 예시를 보여줍니다.",
-            "WriteStatusBar, WriteTable, WriteLog를 어떻게 쓰는지 참고하세요."
-        }, "안내", ConsoleColor.DarkCyan);
         ConsoleUI.WriteStatusBar($"LV.{Enemy.Level} {Enemy.Name}", Enemy.Hp, Enemy.MaxHp, fillColor: ConsoleColor.Green);
         ConsoleUI.WriteLine();
         ConsoleUI.WriteLine();
@@ -214,7 +210,8 @@ public class BattleScene : SceneBase
                         context.Player.Inventory[0].Count--;
                         ConsoleUI.WriteLine($"{context.Player.Poketmons[input - 1].Nickname}에게 상처약을 사용하였다.");
                         Thread.Sleep(1000);
-                        
+                        GameManager.Battle.UseSkill(Enemy, CrruentPoketmon, Enemy.Skills[eindex]);
+                        Thread.Sleep(1000);
                         //현재 포켓몬에게 주기
                         //고를 포켓몬 찾고 거기서 선택해서 회복하기
                     }
@@ -234,8 +231,17 @@ public class BattleScene : SceneBase
                         {
                             context.Player.Poketmons.Add(Enemy);
                             IsGet = true;
+                            ConsoleUI.Write(".");
+                            Thread.Sleep(1000);
+                            ConsoleUI.Write(".");
+                            Thread.Sleep(1000);
+                            ConsoleUI.Write(".");
+                            Thread.Sleep(1200);
                             ConsoleUI.WriteLine($"{Enemy.Name}을 잡았다.");
                             Thread.Sleep(1000);
+                            string inputName = ConsoleUI.ReadString($"{Enemy.Name}에게 별명을 지어주시겠습니까?");
+                            if (!string.IsNullOrEmpty(inputName))
+                                Enemy.Nickname = inputName;
                             GoTo(context, context.Player.PrevKey);
                             break;
                         }
@@ -244,6 +250,7 @@ public class BattleScene : SceneBase
                             ConsoleUI.WriteLine($"{Enemy.Name}이 몬스터볼에서 튀어나왔다.");
                             Thread.Sleep(1000);
                             GameManager.Battle.UseSkill(Enemy, CrruentPoketmon, Enemy.Skills[eindex]);
+                            Thread.Sleep(1000);
                         }    
                     }
                     

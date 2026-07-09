@@ -13,8 +13,6 @@ namespace ConsoleGameFramework.Scenes;
 /// </summary>
 public class StartScene : SceneBase
 {
-    private const int CounterMax = 10;
-
     private static readonly List<MenuOption> Menu = new List<MenuOption>
     {
         new MenuOption(1, "캐릭터 생성", "처음 캐릭터를 생성합니다."),
@@ -26,17 +24,10 @@ public class StartScene : SceneBase
 
     public override SceneKey Key => SceneKey.Start;
 
-    public override void Enter(GameContext context)
-    {
-
-        context.AddLog("샘플 화면에 들어왔습니다.");
-
-    }
-
     public override void Render(GameContext context)
     {
         ConsoleUI.Clear();
-        ConsoleUI.WriteTitle("샘플 화면", "ConsoleUI 기능 미리보기");
+        ConsoleUI.WriteTitle("대충 오박사가 포켓몬에 대해 알려주는 장면", "오늘의 포켓몬은 뭘까요?");
 
 
         ConsoleUI.WriteMenu(Menu, "행동 선택");
@@ -126,6 +117,12 @@ public class StartScene : SceneBase
                     context.AddLog("아직 플레이어를 생성하지않았습니다!");
                     break;
                 }
+                if (context.Player.Poketmons.Count != 0)
+                {
+                    context.AddLog("이미 모든 포켓몬을 훔쳤습니다.");
+                    break;
+                }
+                    
 
                 Poketmon Apoketmon;
                 PoketmonData data2;
