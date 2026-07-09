@@ -41,7 +41,7 @@ public class Road29Scene : SceneBase
         
         //OnWildPoketmonAppeared += WildPoketmonAppearHandler;
 
-        context.AddLog("Map 화면에 들어왔습니다.");
+        context.AddLog("29번 도로");
 
         // 해당하는 Map 받아오기 + 처음 플레이어 위치 갱신
         if(context.Map != MapData.Map6)
@@ -65,7 +65,7 @@ public class Road29Scene : SceneBase
     {
 
         ConsoleUI.Clear();
-        ConsoleUI.WriteTitle($"29번 도로", "T를 누르면 메뉴를 열 수 있습니다");
+        ConsoleUI.WriteTitle($"29번 도로");
 
         ConsoleUI.WriteMap(context.Map);
         //context.Map = MapData.MapInit(MapData.Map4);

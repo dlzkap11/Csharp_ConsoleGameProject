@@ -4,13 +4,15 @@ using ConsoleGameFramework.UI;
 using ConsoleGameFramework.Utills;
 using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace ConsoleGameFramework.Contents;
-
 using ConsoleGameFramework.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+
+namespace ConsoleGameFramework.Contents;
+
+
 
 public class Poketmon
 {
@@ -19,7 +21,15 @@ public class Poketmon
     public int MaxExp { get; private set; }
     public int Exp {  get; set; }
     public int MaxHp { get; private set; }
-    public int Hp { get; set; }
+    private int hp;
+    public int Hp
+    {
+        get => hp;
+        set
+        {
+            hp = Math.Clamp(value, 0, MaxHp);
+        }
+    }
     public int Atk { get; private set; }
     public int Def { get; private set; }
     public int Spd { get; private set; }
@@ -116,11 +126,13 @@ public class Poketmon
             if (Skills.Count < 4)
             {
                 Skills.Add(skill);
-                Console.WriteLine($"{Name}이(가) {skill.Name}을(를) 배웠다!");
+                ConsoleUI.WriteLine($"{Name}이(가) {skill.Name}을(를) 배웠다!");
+                Thread.Sleep(1000);
             }
             else
             {
-                Console.WriteLine($"{Name}은(는) 이미 기술을 4개 알고 있다. {skill.Name}을(를) 배울 수 없다!");
+                ConsoleUI.WriteLine($"{Name}은(는) 이미 기술을 4개 알고 있다. {skill.Name}을(를) 배울 수 없다!");
+                Thread.Sleep(1000);
             }
         }
     }

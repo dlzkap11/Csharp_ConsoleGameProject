@@ -24,7 +24,7 @@ public class HometownScene : SceneBase
 
     public override void Enter(GameContext context)
     {
-        context.AddLog("Map 화면에 들어왔습니다.");
+        context.AddLog("연두마을에 들어왔습니다.");
 
         // 해당하는 Map 받아오기 + 처음 플레이어 위치 갱신
         if (context.Map != MapData.Map8)
@@ -46,7 +46,7 @@ public class HometownScene : SceneBase
 
         ConsoleUI.Clear();
 
-        ConsoleUI.WriteTitle($"연두마을", "T를 누르면 메뉴를 열 수 있습니다");
+        ConsoleUI.WriteTitle($"연두마을", "태초마을이야");
 
         ConsoleUI.WriteMap(context.Map);
         ConsoleUI.WriteLine($"{context.Player.Name}");

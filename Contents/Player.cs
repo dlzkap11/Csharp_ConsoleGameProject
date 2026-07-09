@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleGameFramework.Data;
 
 namespace ConsoleGameFramework.Contents;
 
@@ -23,13 +24,12 @@ public class Player : Character
     public int Money { get; private set; }
     
     public List<Poketmon> Poketmons { get; private set; }
-    public List<Item> Inventory { get; private set; }
+    public List<Item> Inventory { get; private set; } = new List<Item>();
 
     public Player(string name) : base(name)
     { 
         Money = START_MONEY;
         Poketmons = new List<Poketmon>(6);
-        Inventory = new List<Item>();
     }
 
     // 마지막으로 있었던 장소키

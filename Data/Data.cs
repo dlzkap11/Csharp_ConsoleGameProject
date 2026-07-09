@@ -35,3 +35,11 @@ public class PoketmonData
     public Define.Type Type2 { get; set; }
     public List<LearnSkillData> LearnSkills { get; set; } = new List<LearnSkillData>();
 }
+
+public class ItemData
+{
+    public int No { get; set; }
+    public string Name { get; set; }
+    public Define.ItemType Type { get; set; }
+    public int Amout { get; set; } //타입마다 다르게 회복이면 회복량, 볼이면 잡을 확률
+}
