@@ -16,7 +16,8 @@ public class Poketmon
 {
     public PoketmonData Data { get; private set; }
     public int Level { get; private set; }
-
+    public int MaxExp { get; private set; }
+    public int Exp {  get; set; }
     public int MaxHp { get; private set; }
     public int Hp { get; set; }
     public int Atk { get; private set; }
@@ -34,7 +35,9 @@ public class Poketmon
     {
         Data = data;
         Level = level;
-
+        Nickname = Name;
+        MaxExp = 2 + Level * 2;
+        Exp = 0;
         InitializeStatsByLevel();
         InitializeSkillsByLevel();
     }
@@ -45,7 +48,7 @@ public class Poketmon
         Atk = Data.Atk;
         Def = Data.Def;
         Spd = Data.Spd;
-
+        
         for (int i = 1; i < Level; i++)
         {
             MaxHp += LevelUpGrowth.GetHpGain(i);
@@ -55,6 +58,7 @@ public class Poketmon
         }
 
         Hp = MaxHp;
+        
     }
 
     private void InitializeSkillsByLevel()
@@ -82,16 +86,16 @@ public class Poketmon
     public void LevelUp()
     {
         Level++;
-
+        Exp = 0;
         MaxHp += LevelUpGrowth.GetHpGain(Level);
         Atk += LevelUpGrowth.GetAtkGain(Level);
         Def += LevelUpGrowth.GetDefGain(Level);
         Spd += LevelUpGrowth.GetSpdGain(Level);
-
+        MaxExp = LevelUpGrowth.GetExpGain(Level);
         Hp += LevelUpGrowth.GetHpGain(Level);
         if (Hp > MaxHp)
             Hp = MaxHp;
-
+        
         LearnSkillsByLevel();
     }
 

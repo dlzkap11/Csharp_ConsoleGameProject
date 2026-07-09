@@ -117,8 +117,11 @@ public class Player : Character
             // 해당 방향에 H(간호순)이 있으면 전체 회복
             if (TalkNPC(dir, context) == 'H')
             {
-                //TODO 회복기능
-                context.AddLog("회복되었습니다");
+                foreach(Poketmon poketmon in Poketmons)
+                {
+                    poketmon.Hp = poketmon.MaxHp;
+                }
+                context.AddLog("모든 포켓몬의 체력이 회복되었습니다");
             }
                 
             else

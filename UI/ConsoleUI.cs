@@ -109,6 +109,15 @@ public static class ConsoleUI
         _isFrameOpen = true;
     }
 
+    public static void ClearCurrentLine()
+    {
+        string s = "\r";
+        s += new string(' ', Console.CursorLeft);
+        s += "\r";
+        Console.Write(s);
+        Thread.Sleep(1000);
+    }
+
     /// <summary>
     /// 버퍼에 쌓인 한 프레임을 콘솔 화면에 반영합니다.
     /// Console.Clear() 대신 커서를 맨 위로 옮긴 뒤 줄 단위로 덮어써서 깜빡임을 줄입니다.
@@ -724,6 +733,8 @@ public static class ConsoleUI
         WriteBox(logLines, "최근 로그", ConsoleColor.DarkGray);
     }
 
+    
+
     /// <summary>
     /// 한글은 콘솔에서 보통 영문보다 넓게 표시됩니다.
     /// 박스와 표의 정렬을 맞추기 위해 표시 폭을 직접 계산합니다.
@@ -782,6 +793,8 @@ public static class ConsoleUI
 
         return new string(characters.ToArray()) + "…";
     }
+
+    
 
     private static bool IsWideCharacter(char character)
     {

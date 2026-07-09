@@ -19,7 +19,8 @@ public class Road14Scene : SceneBase
     };
 
     public override SceneKey Key => SceneKey.Road14;
-
+    const int LevelScale = 5;
+    public int[] WildPoketmon = { 19, 16 };
 
     public override void Enter(GameContext context)
     {
@@ -66,7 +67,9 @@ public class Road14Scene : SceneBase
         //현재 위치가 *(풀숲)이면 일정확률로 몬스터를 만난다.
         if (MapData.prevMap == '*' && context.Random.Next(100) < 10)
         {
-            //GameManager.Battle.Battle(context);
+            context.Player.PrevKey = Key;
+            GameManager.Battle.GetFiled(LevelScale, WildPoketmon);
+            GoTo(context, SceneKey.Battle);
 
         }
 
