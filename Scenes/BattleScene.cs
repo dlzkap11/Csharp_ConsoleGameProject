@@ -182,31 +182,15 @@ public class BattleScene : SceneBase
                             break;
                         }
                         //상처약
-                        switch (input)
-                        {
-                            case 1:
-                                context.Player.Poketmons[input - 1].Hp += context.Player.Inventory[0].Amount;
-                                break;
-                            case 2:
-                                context.Player.Poketmons[input - 1].Hp += context.Player.Inventory[0].Amount;
-                                break;
-                            case 3:
-                                context.Player.Poketmons[input - 1].Hp += context.Player.Inventory[0].Amount;
-                                break;
-                            case 4:
-                                context.Player.Poketmons[input - 1].Hp += context.Player.Inventory[0].Amount;
-                                break;
-                            case 5:
-                                context.Player.Poketmons[input - 1].Hp += context.Player.Inventory[0].Amount;
-                                break;
-                            case 6:
-                                context.Player.Poketmons[input - 1].Hp += context.Player.Inventory[0].Amount;
-                                break;
-                        }
+                        context.Player.Poketmons[input - 1].Hp += context.Player.Inventory[0].Amount;
                         context.Player.Inventory[0].Count--;
                         ConsoleUI.WriteLine($"{context.Player.Poketmons[input - 1].Nickname}에게 상처약을 사용하였다.");
                         Thread.Sleep(1000);
+
+
                         GameManager.Battle.UseSkill(Enemy, CurrentPoketmon, Enemy.Skills[eindex]);
+
+
                         Thread.Sleep(1000);
 
                     }

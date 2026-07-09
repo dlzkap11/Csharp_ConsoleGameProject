@@ -1,12 +1,8 @@
 ﻿using ConsoleGameFramework.Contents;
 using ConsoleGameFramework.Core;
 using ConsoleGameFramework.Data;
-using ConsoleGameFramework.Scenes;
 using ConsoleGameFramework.UI;
 using ConsoleGameFramework.Utills;
-using System.Collections;
-using System.Reflection;
-using static ConsoleGameFramework.Utills.Define;
 
 namespace ConsoleGameFramework.Manager;
 
@@ -24,7 +20,7 @@ public class BattleManager
         // 야생 포켓몬 생성
         PoketmonData data = PoketmonDatabase.GetPokemon(poketmons[rNo]);
         context.AddLog($"야생의 {data.Name}이 나타났다!");
-        
+
         Poketmon wildPoketmon = new Poketmon(data, rLevel);
         return wildPoketmon;
     }
@@ -34,7 +30,7 @@ public class BattleManager
     {
         poketmons.Clear();
         levelScale = scale;
-        for(int i = 0; i < wpoketmons.Length; i++)
+        for (int i = 0; i < wpoketmons.Length; i++)
         {
             poketmons.Add(wpoketmons[i]);
         }
@@ -84,13 +80,13 @@ public class BattleManager
             UseSkill(enemyP, myP, enemyP.Skills[eindex]);
             Thread.Sleep(1000);
         }
-            
+
     }
 
     public void UseSkill(Poketmon attacker, Poketmon defender, SkillData skill)
     {
         ConsoleUI.WriteLine($"{attacker.Nickname}이(가) {skill.Name}을(를) 사용했다!");
-        
+
         if (skill.Power != 0)
         {
             float typeMul = TypeEffectiveness.GetFinalMultiplier(skill.Type, defender.Type1, defender.Type2);
@@ -104,13 +100,15 @@ public class BattleManager
         }
         else if (skill.Power == 0)
         {
-            if(skill.Name == "울음소리")
+            // 현재는 냅다 기술이름을 받고 있지만 기술DB에 따로 기능을
+            // 추가해주면 기술을 쓸 때 알아서 해당 기술에 특수기믹을 수행할 수 있을 듯;;
+            if (skill.Name == "울음소리")
             {
                 //공떨
                 ConsoleUI.ClearCurrentLine();
                 ConsoleUI.WriteLine($"{defender.Nickname}의 공격이 떨어졌다!");
             }
-            else if(skill.Name == "꼬리흔들기")
+            else if (skill.Name == "꼬리흔들기")
             {
                 //방떨
                 ConsoleUI.ClearCurrentLine();

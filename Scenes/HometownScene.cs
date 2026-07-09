@@ -19,6 +19,8 @@ public class HometownScene : SceneBase
     };
 
     public override SceneKey Key => SceneKey.Hometown;
+
+
     const int LevelScale = 2;
     public int[] WildPoketmon = { 19, 16, 25 };
 
