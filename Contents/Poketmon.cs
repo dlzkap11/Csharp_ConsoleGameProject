@@ -75,17 +75,40 @@ public class Poketmon
     {
         Skills.Clear();
 
-        var learnedSkills = Data.LearnSkills
-            .Where(x => x.Level <= Level)
-            .OrderBy(x => x.Level)
-            .ThenBy(x => x.SkillNo)
-            .ToList();
+        List<LearnSkillData> learnedSkills = new List<LearnSkillData>();
 
-        foreach (var learn in learnedSkills)
+        for (int i = 0; i < Data.LearnSkills.Count; i++)
         {
-            SkillData skill = SkillDatabase.GetSkill(learn.SkillNo);
+            if (Data.LearnSkills[i].Level <= Level)
+            {
+                learnedSkills.Add(Data.LearnSkills[i]);
+            }
+        }
 
-            if (!Skills.Any(x => x.No == skill.No))
+        learnedSkills.Sort((a, b) =>
+        {
+            int levelCompare = a.Level.CompareTo(b.Level);
+            if (levelCompare != 0)
+                return levelCompare;
+
+            return a.SkillNo.CompareTo(b.SkillNo);
+        });
+
+        for (int i = 0; i < learnedSkills.Count; i++)
+        {
+            SkillData skill = SkillDatabase.GetSkill(learnedSkills[i].SkillNo);
+
+            bool alreadyHasSkill = false;
+            for (int j = 0; j < Skills.Count; j++)
+            {
+                if (Skills[j].No == skill.No)
+                {
+                    alreadyHasSkill = true;
+                    break;
+                }
+            }
+
+            if (!alreadyHasSkill)
             {
                 if (Skills.Count < 4)
                     Skills.Add(skill);
@@ -111,16 +134,33 @@ public class Poketmon
 
     private void LearnSkillsByLevel()
     {
-        var learnList = Data.LearnSkills
-            .Where(x => x.Level == Level)
-            .OrderBy(x => x.SkillNo)
-            .ToList();
+        List<LearnSkillData> learnList = new List<LearnSkillData>();
 
-        foreach (var learn in learnList)
+        for (int i = 0; i < Data.LearnSkills.Count; i++)
         {
-            SkillData skill = SkillDatabase.GetSkill(learn.SkillNo);
+            if (Data.LearnSkills[i].Level == Level)
+            {
+                learnList.Add(Data.LearnSkills[i]);
+            }
+        }
 
-            if (Skills.Any(x => x.No == skill.No))
+        learnList.Sort((a, b) => a.SkillNo.CompareTo(b.SkillNo));
+
+        for (int i = 0; i < learnList.Count; i++)
+        {
+            SkillData skill = SkillDatabase.GetSkill(learnList[i].SkillNo);
+
+            bool alreadyHasSkill = false;
+            for (int j = 0; j < Skills.Count; j++)
+            {
+                if (Skills[j].No == skill.No)
+                {
+                    alreadyHasSkill = true;
+                    break;
+                }
+            }
+
+            if (alreadyHasSkill)
                 continue;
 
             if (Skills.Count < 4)
