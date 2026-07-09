@@ -5,6 +5,7 @@ using ConsoleGameFramework.Scenes;
 using ConsoleGameFramework.UI;
 using ConsoleGameFramework.Utills;
 using System.Collections;
+using System.Reflection;
 using static ConsoleGameFramework.Utills.Define;
 
 namespace ConsoleGameFramework.Manager;
@@ -60,25 +61,28 @@ public class BattleManager
     {
         //상대와 나의 속도 비교 후 더 빠른 쪽이 먼저 공격
         Random rand = new Random();
-        rand.Next(0, 4);
+        int eindex = rand.Next(0, 4);
+        //적 스킬개수보다 eindex가 클 경우 리롤
+        while (eindex >= enemyP.Skills.Count)
+            eindex = rand.Next(0, 4);
+
         if (myP.Spd < enemyP.Spd)
         {
-            
-            UseSkill(enemyP, myP, enemyP.Skills[rand.Next(0, 4)]);
-            myP.Hp -= CalculateDamage(enemyP, myP, enemyP.Skills[index]);
+            UseSkill(enemyP, myP, enemyP.Skills[eindex]);
+            Thread.Sleep(1000);
             if (myP.IsDead)
                 return;
             UseSkill(myP, enemyP, myP.Skills[index]);
-            enemyP.Hp -= CalculateDamage(myP, enemyP, myP.Skills[index]);
+            Thread.Sleep(1000);
         }
         else
         {
             UseSkill(myP, enemyP, myP.Skills[index]);
-            enemyP.Hp -= CalculateDamage(myP, enemyP, myP.Skills[index]);
+            Thread.Sleep(1000);
             if (enemyP.IsDead)
                 return;
-            UseSkill(enemyP, myP, enemyP.Skills[rand.Next(0, 4)]);
-            myP.Hp -= CalculateDamage(enemyP, myP, enemyP.Skills[index]);
+            UseSkill(enemyP, myP, enemyP.Skills[eindex]);
+            Thread.Sleep(1000);
         }
             
     }
@@ -91,8 +95,14 @@ public class BattleManager
     // 하나로 모아서 내가 한 행동만 받아서 잘하고 상대 공격라인만 쓰면 될 듯
     public void EnemyAttack(Poketmon myP, Poketmon enemyP, int choice)
     {
+        Random rand = new Random();
+        int eindex = rand.Next(0, 4);
+        //적 스킬개수보다 eindex가 클 경우 리롤
+        while (eindex >= enemyP.Skills.Count)
+            eindex = rand.Next(0, 4);
+
         // choice 2, 3 ,4 각각 아이템사용 포켓몬교체 도망치기
-        if(choice == 2)
+        if (choice == 2)
         {
             
         }
@@ -102,15 +112,16 @@ public class BattleManager
         }
         else if(choice == 4)
         {
-
+            UseSkill(enemyP, myP, enemyP.Skills[eindex]);
+            Thread.Sleep(1000);
         }
         
     }
 
     private void UseSkill(Poketmon attacker, Poketmon defender, SkillData skill)
     {
-        Console.WriteLine($"{attacker.Name}이(가) {skill.Name}을(를) 사용했다!");
-
+        ConsoleUI.WriteLine($"{attacker.Nickname}이(가) {skill.Name}을(를) 사용했다!");
+        
         if (skill.Power != 0)
         {
             float typeMul = TypeEffectiveness.GetFinalMultiplier(skill.Type, defender.Type1, defender.Type2);
@@ -119,20 +130,22 @@ public class BattleManager
             defender.Hp -= damage;
             if (defender.Hp < 0)
                 defender.Hp = 0;
-
-            Console.WriteLine($"{defender.Name}에게 {damage} 데미지!");
+            ConsoleUI.ClearCurrentLine();
+            ConsoleUI.WriteLine($"{defender.Nickname}에게 {damage} 데미지!");
         }
         else if (skill.Power == 0)
         {
             if(skill.Name == "울음소리")
             {
                 //공떨
-                Console.WriteLine($"{defender.Name}의 공격이 떨어졌다!");
+                ConsoleUI.ClearCurrentLine();
+                ConsoleUI.WriteLine($"{defender.Nickname}의 공격이 떨어졌다!");
             }
             else if(skill.Name == "꼬리흔들기")
             {
                 //방떨
-                Console.WriteLine($"{defender.Name}의 방어력이 떨어졌다!");
+                ConsoleUI.ClearCurrentLine();
+                ConsoleUI.WriteLine($"{defender.Nickname}의 방어력이 떨어졌다!");
             }
         }
     }

@@ -25,8 +25,8 @@ public static class PoketmonDatabase
                 {
                     new LearnSkillData { Level = 1, SkillNo = 1 },
                     new LearnSkillData { Level = 1, SkillNo = 2 },
-                    new LearnSkillData { Level = 7, SkillNo = 3 },
-                    new LearnSkillData { Level = 13, SkillNo = 4 }
+                    new LearnSkillData { Level = 7, SkillNo = 4 },
+                    new LearnSkillData { Level = 13, SkillNo = 9 }
                 }
             },
 
@@ -43,7 +43,7 @@ public static class PoketmonDatabase
                 LearnSkills = new List<LearnSkillData>
                 {
                     new LearnSkillData { Level = 1, SkillNo = 1 },
-                    new LearnSkillData { Level = 1, SkillNo = 2 },
+                    new LearnSkillData { Level = 1, SkillNo = 8 },
                     new LearnSkillData { Level = 7, SkillNo = 5 }
                 }
             },
@@ -60,7 +60,7 @@ public static class PoketmonDatabase
                 Type2 = Define.Type.None,
                 LearnSkills = new List<LearnSkillData>
                 {
-                    new LearnSkillData { Level = 1, SkillNo = 1 },
+                    new LearnSkillData { Level = 1, SkillNo = 3 },
                     new LearnSkillData { Level = 1, SkillNo = 2 },
                     new LearnSkillData { Level = 7, SkillNo = 6 }
                 }
@@ -76,7 +76,12 @@ public static class PoketmonDatabase
                 Spd = 56,
                 Type1 = Define.Type.Normal,
                 Type2 = Define.Type.Flying,
-                LearnSkills = new List<LearnSkillData>()
+                LearnSkills = new List<LearnSkillData>
+                {
+                    new LearnSkillData { Level = 1, SkillNo = 1 },
+                    new LearnSkillData { Level = 1, SkillNo = 10 },
+                    new LearnSkillData { Level = 7, SkillNo = 12 }
+                }
             },
 
             [17] = new PoketmonData
@@ -89,7 +94,14 @@ public static class PoketmonDatabase
                 Spd = 71,
                 Type1 = Define.Type.Normal,
                 Type2 = Define.Type.Flying,
-                LearnSkills = new List<LearnSkillData>()
+                LearnSkills = new List<LearnSkillData>
+                {
+                    new LearnSkillData { Level = 1, SkillNo = 1 },
+                    new LearnSkillData { Level = 1, SkillNo = 10 },
+                    new LearnSkillData { Level = 7, SkillNo = 11 },
+                    new LearnSkillData { Level = 8, SkillNo = 12 }
+
+                }
             },
 
             [18] = new PoketmonData
@@ -102,7 +114,14 @@ public static class PoketmonDatabase
                 Spd = 101,
                 Type1 = Define.Type.Normal,
                 Type2 = Define.Type.Flying,
-                LearnSkills = new List<LearnSkillData>()
+                LearnSkills = new List<LearnSkillData>
+                {
+                    new LearnSkillData { Level = 1, SkillNo = 1 },
+                    new LearnSkillData { Level = 1, SkillNo = 10 },
+                    new LearnSkillData { Level = 7, SkillNo = 11 },
+                    new LearnSkillData { Level = 8, SkillNo = 12 }
+
+                }
             },
 
             [19] = new PoketmonData
@@ -115,7 +134,14 @@ public static class PoketmonDatabase
                 Spd = 72,
                 Type1 = Define.Type.Normal,
                 Type2 = Define.Type.None,
-                LearnSkills = new List<LearnSkillData>()
+                LearnSkills = new List<LearnSkillData>
+                {
+                    new LearnSkillData { Level = 1, SkillNo = 3 },
+                    new LearnSkillData { Level = 1, SkillNo = 2 },
+                    new LearnSkillData { Level = 4, SkillNo = 14 },
+                    new LearnSkillData { Level = 6, SkillNo = 13 }
+
+                }
             },
 
             [20] = new PoketmonData
@@ -128,7 +154,14 @@ public static class PoketmonDatabase
                 Spd = 97,
                 Type1 = Define.Type.Normal,
                 Type2 = Define.Type.None,
-                LearnSkills = new List<LearnSkillData>()
+                LearnSkills = new List<LearnSkillData>
+                {
+                    new LearnSkillData { Level = 1, SkillNo = 3 },
+                    new LearnSkillData { Level = 1, SkillNo = 2 },
+                    new LearnSkillData { Level = 4, SkillNo = 14 },
+                    new LearnSkillData { Level = 6, SkillNo = 13 }
+
+                }
             },
 
             [25] = new PoketmonData
@@ -141,7 +174,14 @@ public static class PoketmonDatabase
                 Spd = 90,
                 Type1 = Define.Type.Electric,
                 Type2 = Define.Type.None,
-                LearnSkills = new List<LearnSkillData>()
+                LearnSkills = new List<LearnSkillData>
+                {
+                    new LearnSkillData { Level = 1, SkillNo = 3 },
+                    new LearnSkillData { Level = 1, SkillNo = 2 },
+                    new LearnSkillData { Level = 4, SkillNo = 7 },
+                    new LearnSkillData { Level = 6, SkillNo = 14 }
+
+                }
             }
         };
     }

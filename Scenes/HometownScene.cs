@@ -19,7 +19,8 @@ public class HometownScene : SceneBase
     };
 
     public override SceneKey Key => SceneKey.Hometown;
-
+    const int LevelScale = 2;
+    public int[] WildPoketmon = { 19, 16, 25 };
 
     public override void Enter(GameContext context)
     {
@@ -67,8 +68,9 @@ public class HometownScene : SceneBase
         if (MapData.prevMap == '*' && context.Random.Next(100) < 10)
         {
 
-            // 여기서 배틀매니저에게 지금 이곳이 어디인가를 보내고 (SceneKey) 포켓몬 생성 어쩌구저쩌구
-            //GameManager.Battle.Battle(context);
+            context.Player.PrevKey = Key;
+            GameManager.Battle.GetFiled(LevelScale, WildPoketmon);
+            GoTo(context, SceneKey.Battle);
 
         }
 

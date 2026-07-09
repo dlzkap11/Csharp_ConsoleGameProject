@@ -34,7 +34,7 @@ public class Poketmon
     {
         Data = data;
         Level = level;
-
+        Nickname = data.Name;
         InitializeStatsByLevel();
         InitializeSkillsByLevel();
     }

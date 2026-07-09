@@ -18,6 +18,13 @@ public static class SkillDatabase
             { 5, new SkillData { No = 5, Name = "불꽃세례", Type = Define.Type.Fire, Power = 40, Accuracy = 100, PP = 25 } },
             { 6, new SkillData { No = 6, Name = "물대포", Type = Define.Type.Water, Power = 40, Accuracy = 100, PP = 25 } },
             { 7, new SkillData { No = 7, Name = "전기쇼크", Type = Define.Type.Electric, Power = 40, Accuracy = 100, PP = 30 } },
+            { 8, new SkillData { No = 8, Name = "할퀴기", Type = Define.Type.Normal, Power = 55, Accuracy = 80, PP = 30 } },
+            { 9, new SkillData { No = 9, Name = "잎날가르기", Type = Define.Type.Grass, Power = 65, Accuracy = 80, PP = 20 } },
+            { 10, new SkillData { No = 10, Name = "쪼기", Type = Define.Type.Flying, Power = 35, Accuracy = 100, PP = 20 } },
+            { 11, new SkillData { No = 11, Name = "진흙뿌리기", Type = Define.Type.Ground, Power = 20, Accuracy = 100, PP = 10 } },
+            { 12, new SkillData { No = 12, Name = "바람일으키기", Type = Define.Type.Flying, Power = 40, Accuracy = 100, PP = 15 } },
+            { 13, new SkillData { No = 13, Name = "물기", Type = Define.Type.Dark, Power = 60, Accuracy = 100, PP = 15 } },
+            { 14, new SkillData { No = 14, Name = "전광석화", Type = Define.Type.Normal, Power = 40, Accuracy = 100, PP = 15 } },
         };
     }
 

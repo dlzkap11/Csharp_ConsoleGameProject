@@ -55,7 +55,7 @@ public class StartScene : SceneBase
                     name = ConsoleUI.ReadString("이름을 입력하세요");
 
                     GameManager.Resource.PlayerInit(name);
-                    GoTo(context, SceneKey.Title);
+                    context.AddLog($"{context.Player.Name}을 생성하였습니다.");
                 }
                 else
                 {
@@ -108,6 +108,7 @@ public class StartScene : SceneBase
                     name = ConsoleUI.ReadString("별명을 지어주세요");
                     if (!string.IsNullOrEmpty(name))
                         poketmon.Nickname = name;
+                    GoTo(context, SceneKey.Title);
                 }
                 else
                 {
