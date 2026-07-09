@@ -12,4 +12,5 @@ public static class LevelUpGrowth
     public static int GetAtkGain(int level) => 1 + level / 20;
     public static int GetDefGain(int level) => 1 + level / 20;
     public static int GetSpdGain(int level) => 1 + level / 25;
+    public static int GetExpGain(int level) => 2 + level * 2;
 }

@@ -93,6 +93,15 @@ public class BattleScene : SceneBase
                 GameManager.Battle.GetBattle(context.Player.Poketmons[0], Enemy, input - 1);
                 if (Enemy.IsDead)
                 {
+                    //임시경험치계산기 나중에 다른데로 옮기기
+                    context.Player.Poketmons[0].Exp += (int)(Enemy.Level * 1.5f);
+                    if (context.Player.Poketmons[0].Exp >= context.Player.Poketmons[0].MaxExp)
+                    {
+                        context.Player.Poketmons[0].LevelUp();
+                        ConsoleUI.WriteLine($"{context.Player.Poketmons[0].Nickname}이 레벨업 했다");
+                    }
+                        
+
                     context.AddLog("배틀에서 승리했다.");
                     Thread.Sleep(1000);
                     GoTo(context, context.Player.PrevKey);
@@ -101,6 +110,11 @@ public class BattleScene : SceneBase
                 {
                     context.AddLog($"배틀에서 패배했다. {context.Player.Name}는 눈앞이 캄캄해졌다.");
                     Thread.Sleep(1000);
+                    // 죽은친구들살리기 나중에 함수로 하나 만들어도 괜찮을듯
+                    foreach (Poketmon poketmon in context.Player.Poketmons)
+                    {
+                        poketmon.Hp = poketmon.MaxHp;
+                    }
                     GoTo(context, SceneKey.Hometown);
                 }
                 break;

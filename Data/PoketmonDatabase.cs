@@ -15,7 +15,7 @@ public static class PoketmonDatabase
             {
                 No = 1,
                 Name = "이상해씨",
-                Hp = 45,
+                Hp = 10, //45
                 Atk = 65,
                 Def = 65,
                 Spd = 45,
