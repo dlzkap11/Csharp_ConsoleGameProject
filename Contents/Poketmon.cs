@@ -1,13 +1,6 @@
-﻿using ConsoleGameFramework.Core;
-using ConsoleGameFramework.Manager;
+﻿using ConsoleGameFramework.Data;
 using ConsoleGameFramework.UI;
 using ConsoleGameFramework.Utills;
-using System.Xml.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using ConsoleGameFramework.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 
 namespace ConsoleGameFramework.Contents;
@@ -19,7 +12,7 @@ public class Poketmon
     public PoketmonData Data { get; private set; }
     public int Level { get; private set; }
     public int MaxExp { get; private set; }
-    public int Exp {  get; set; }
+    public int Exp { get; set; }
     public int MaxHp { get; private set; }
     private int hp;
     public int Hp
@@ -48,17 +41,17 @@ public class Poketmon
         Nickname = Name;
         MaxExp = 2 + Level * 2;
         Exp = 0;
-        InitializeStatsByLevel();
-        InitializeSkillsByLevel();
+        PoketmonStatsByLevelInit();
+        PoketmonSkillsByLevelInit();
     }
 
-    private void InitializeStatsByLevel()
+    private void PoketmonStatsByLevelInit()
     {
         MaxHp = Data.Hp;
         Atk = Data.Atk;
         Def = Data.Def;
         Spd = Data.Spd;
-        
+
         for (int i = 1; i < Level; i++)
         {
             MaxHp += LevelUpGrowth.GetHpGain(i);
@@ -68,10 +61,10 @@ public class Poketmon
         }
 
         Hp = MaxHp;
-        
+
     }
 
-    private void InitializeSkillsByLevel()
+    private void PoketmonSkillsByLevelInit()
     {
         Skills.Clear();
 
@@ -128,7 +121,7 @@ public class Poketmon
         Hp += LevelUpGrowth.GetHpGain(Level);
         if (Hp > MaxHp)
             Hp = MaxHp;
-        
+
         LearnSkillsByLevel();
     }
 

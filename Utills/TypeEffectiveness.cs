@@ -218,6 +218,7 @@ public static class TypeEffectiveness
         }
     };
 
+    //타입 상성 데미지 배수
     public static float GetMultiplier(Define.Type attackType, Define.Type defenseType)
     {
         if (Table.TryGetValue(attackType, out var targets) &&
@@ -229,10 +230,13 @@ public static class TypeEffectiveness
         return 1.0f;
     }
 
+    // 복수타입용
     public static float GetFinalMultiplier(Define.Type attackType, Define.Type defenseType1, Define.Type defenseType2)
     {
         return GetMultiplier(attackType, defenseType1) * GetMultiplier(attackType, defenseType2);
     }
+
+
     /* 사용예시
     float damageMultiplier = TypeEffectiveness.GetFinalMultiplier(
     Define.Type.Fire,
